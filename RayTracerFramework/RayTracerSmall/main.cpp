@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <sstream>
 #include <string.h>
+#include "Sphere.h"
 
 #if defined __linux__ || defined __APPLE__
 // "Compiled for Linux
@@ -40,77 +41,77 @@
 #define INFINITY 1e8
 #endif
 
-template<typename T>
-class Vec3
-{
-public:
-	T x, y, z;
-	Vec3() : x(T(0)), y(T(0)), z(T(0)) {}
-	Vec3(T xx) : x(xx), y(xx), z(xx) {}
-	Vec3(T xx, T yy, T zz) : x(xx), y(yy), z(zz) {}
-	Vec3& normalize()
-	{
-		T nor2 = length2();
-		if (nor2 > 0) {
-			T invNor = 1 / sqrt(nor2);
-			x *= invNor, y *= invNor, z *= invNor;
-		}
-		return *this;
-	}
-	Vec3<T> operator * (const T &f) const { return Vec3<T>(x * f, y * f, z * f); }
-	Vec3<T> operator * (const Vec3<T> &v) const { return Vec3<T>(x * v.x, y * v.y, z * v.z); }
-	T dot(const Vec3<T> &v) const { return x * v.x + y * v.y + z * v.z; }
-	Vec3<T> operator - (const Vec3<T> &v) const { return Vec3<T>(x - v.x, y - v.y, z - v.z); }
-	Vec3<T> operator + (const Vec3<T> &v) const { return Vec3<T>(x + v.x, y + v.y, z + v.z); }
-	Vec3<T>& operator += (const Vec3<T> &v) { x += v.x, y += v.y, z += v.z; return *this; }
-	Vec3<T>& operator *= (const Vec3<T> &v) { x *= v.x, y *= v.y, z *= v.z; return *this; }
-	Vec3<T> operator - () const { return Vec3<T>(-x, -y, -z); }
-	T length2() const { return x * x + y * y + z * z; }
-	T length() const { return sqrt(length2()); }
-	friend std::ostream & operator << (std::ostream &os, const Vec3<T> &v)
-	{
-		os << "[" << v.x << " " << v.y << " " << v.z << "]";
-		return os;
-	}
-};
+//template<typename T>
+//class Vec3
+//{
+//public:
+//	T x, y, z;
+//	Vec3() : x(T(0)), y(T(0)), z(T(0)) {}
+//	Vec3(T xx) : x(xx), y(xx), z(xx) {}
+//	Vec3(T xx, T yy, T zz) : x(xx), y(yy), z(zz) {}
+//	Vec3& normalize()
+//	{
+//		T nor2 = length2();
+//		if (nor2 > 0) {
+//			T invNor = 1 / sqrt(nor2);
+//			x *= invNor, y *= invNor, z *= invNor;
+//		}
+//		return *this;
+//	}
+//	Vec3<T> operator * (const T &f) const { return Vec3<T>(x * f, y * f, z * f); }
+//	Vec3<T> operator * (const Vec3<T> &v) const { return Vec3<T>(x * v.x, y * v.y, z * v.z); }
+//	T dot(const Vec3<T> &v) const { return x * v.x + y * v.y + z * v.z; }
+//	Vec3<T> operator - (const Vec3<T> &v) const { return Vec3<T>(x - v.x, y - v.y, z - v.z); }
+//	Vec3<T> operator + (const Vec3<T> &v) const { return Vec3<T>(x + v.x, y + v.y, z + v.z); }
+//	Vec3<T>& operator += (const Vec3<T> &v) { x += v.x, y += v.y, z += v.z; return *this; }
+//	Vec3<T>& operator *= (const Vec3<T> &v) { x *= v.x, y *= v.y, z *= v.z; return *this; }
+//	Vec3<T> operator - () const { return Vec3<T>(-x, -y, -z); }
+//	T length2() const { return x * x + y * y + z * z; }
+//	T length() const { return sqrt(length2()); }
+//	friend std::ostream & operator << (std::ostream &os, const Vec3<T> &v)
+//	{
+//		os << "[" << v.x << " " << v.y << " " << v.z << "]";
+//		return os;
+//	}
+//};
 
-typedef Vec3<float> Vec3f;
+//typedef Vec3<float> Vec3f;
 
-class Sphere
-{
-public:
-	Vec3f center;                           /// position of the sphere
-	float radius, radius2;                  /// sphere radius and radius^2
-	Vec3f surfaceColor, emissionColor;      /// surface color and emission (light)
-	float transparency, reflection;         /// surface transparency and reflectivity
-	Sphere(
-		const Vec3f &c,
-		const float &r,
-		const Vec3f &sc,
-		const float &refl = 0,
-		const float &transp = 0,
-		const Vec3f &ec = 0) :
-		center(c), radius(r), radius2(r * r), surfaceColor(sc), emissionColor(ec),
-		transparency(transp), reflection(refl)
-	{ /* empty */
-	}
-	//[comment]
-	// Compute a ray-sphere intersection using the geometric solution
-	//[/comment]
-	bool intersect(const Vec3f &rayorig, const Vec3f &raydir, float &t0, float &t1) const
-	{
-		Vec3f l = center - rayorig;
-		float tca = l.dot(raydir);
-		if (tca < 0) return false;
-		float d2 = l.dot(l) - tca * tca;
-		if (d2 > radius2) return false;
-		float thc = sqrt(radius2 - d2);
-		t0 = tca - thc;
-		t1 = tca + thc;
-
-		return true;
-	}
-};
+//class Sphere
+//{
+//public:
+//	Vec3f center;                           /// position of the sphere
+//	float radius, radius2;                  /// sphere radius and radius^2
+//	Vec3f surfaceColor, emissionColor;      /// surface color and emission (light)
+//	float transparency, reflection;         /// surface transparency and reflectivity
+//	Sphere(
+//		const Vec3f &c,
+//		const float &r,
+//		const Vec3f &sc,
+//		const float &refl = 0,
+//		const float &transp = 0,
+//		const Vec3f &ec = 0) :
+//		center(c), radius(r), radius2(r * r), surfaceColor(sc), emissionColor(ec),
+//		transparency(transp), reflection(refl)
+//	{ /* empty */
+//	}
+//	//[comment]
+//	// Compute a ray-sphere intersection using the geometric solution
+//	//[/comment]
+//	bool intersect(const Vec3f &rayorig, const Vec3f &raydir, float &t0, float &t1) const
+//	{
+//		Vec3f l = center - rayorig;
+//		float tca = l.dot(raydir);
+//		if (tca < 0) return false;
+//		float d2 = l.dot(l) - tca * tca;
+//		if (d2 > radius2) return false;
+//		float thc = sqrt(radius2 - d2);
+//		t0 = tca - thc;
+//		t1 = tca + thc;
+//
+//		return true;
+//	}
+//};
 
 //[comment]
 // This variable controls the maximum recursion depth
@@ -156,7 +157,8 @@ Vec3f trace(
 	if (!sphere) return Vec3f(2);
 	Vec3f surfaceColor = 0; // color of the ray/surfaceof the object intersected by the ray
 	Vec3f phit = rayorig + raydir * tnear; // point of intersection
-	Vec3f nhit = phit - sphere->center; // normal at the intersection point
+	Vec3f test = sphere->getCenter();
+	Vec3f nhit = phit - sphere->getCenter(); // normal at the intersection point
 	nhit.normalize(); // normalize normal direction
 					  // If the normal and the view direction are not opposite to each other
 					  // reverse the normal direction. That also means we are inside the sphere so set
@@ -165,7 +167,7 @@ Vec3f trace(
 	float bias = 1e-4; // add some bias to the point from which we will be tracing
 	bool inside = false;
 	if (raydir.dot(nhit) > 0) nhit = -nhit, inside = true;
-	if ((sphere->transparency > 0 || sphere->reflection > 0) && depth < MAX_RAY_DEPTH) {
+	if ((sphere->getTransparency() > 0 || sphere->getReflection() > 0) && depth < MAX_RAY_DEPTH) {
 		float facingratio = -raydir.dot(nhit);
 		// change the mix value to tweak the effect
 		float fresneleffect = mix(pow(1 - facingratio, 3), 1, 0.1);
@@ -176,7 +178,7 @@ Vec3f trace(
 		Vec3f reflection = trace(phit + nhit * bias, refldir, spheres, depth + 1);
 		Vec3f refraction = 0;
 		// if the sphere is also transparent compute refraction ray (transmission)
-		if (sphere->transparency) {
+		if (sphere->getTransparency()) {
 			float ior = 1.1, eta = (inside) ? ior : 1 / ior; // are we inside or outside the surface?
 			float cosi = -nhit.dot(raydir);
 			float k = 1 - eta * eta * (1 - cosi * cosi);
@@ -187,15 +189,15 @@ Vec3f trace(
 		// the result is a mix of reflection and refraction (if the sphere is transparent)
 		surfaceColor = (
 			reflection * fresneleffect +
-			refraction * (1 - fresneleffect) * sphere->transparency) * sphere->surfaceColor;
+			refraction * (1 - fresneleffect) * sphere->getTransparency()) * sphere->getSurfaceColor();
 	}
 	else {
 		// it's a diffuse object, no need to raytrace any further
 		for (unsigned i = 0; i < spheres.size(); ++i) {
-			if (spheres[i].emissionColor.x > 0) {
+			if (spheres[i].getEmissionsColor().x > 0) {
 				// this is a light
 				Vec3f transmission = 1;
-				Vec3f lightDirection = spheres[i].center - phit;
+				Vec3f lightDirection = spheres[i].getCenter() - phit;
 				lightDirection.normalize();
 				for (unsigned j = 0; j < spheres.size(); ++j) {
 					if (i != j) {
@@ -206,13 +208,13 @@ Vec3f trace(
 						}
 					}
 				}
-				surfaceColor += sphere->surfaceColor * transmission *
-					std::max(float(0), nhit.dot(lightDirection)) * spheres[i].emissionColor;
+				surfaceColor += sphere->getSurfaceColor() * transmission *
+					std::max(float(0), nhit.dot(lightDirection)) * spheres[i].getEmissionsColor();
 			}
 		}
 	}
 
-	return surfaceColor + sphere->emissionColor;
+	return surfaceColor + sphere->getEmissionsColor();
 }
 
 //[comment]
