@@ -1,0 +1,9 @@
+﻿Build started 26/01/2016 11:28:06.
+     1>Project "C:\Users\s013697b\Downloads\RayTracerToolChain\RayTracerFramework\RayTracerSmall\RayTracerSmall.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         RayTracerSmall.vcxproj -> C:\Users\s013697b\Downloads\RayTracerToolChain\RayTracerFramework\x64\Debug\RayTracerSmall.exe
+     1>Done Building Project "C:\Users\s013697b\Downloads\RayTracerToolChain\RayTracerFramework\RayTracerSmall\RayTracerSmall.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.07
