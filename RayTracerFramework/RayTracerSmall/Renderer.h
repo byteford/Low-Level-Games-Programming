@@ -5,7 +5,7 @@
 #include "definitions.h"
 #include <algorithm>
 #include <fstream>
-
+#include <string>
 #include <sstream>
 class Renderer
 {
@@ -18,6 +18,6 @@ public:
 		const Vec3f &raydir,
 		const std::vector<Sphere> &spheres,
 		const int &depth);
-	void render(const std::vector<Sphere> &spheres, int iteration);
+	void render(const std::vector<Sphere> &spheres, int iteration, const char* folderName);
 };
 

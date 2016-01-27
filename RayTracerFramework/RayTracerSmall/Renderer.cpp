@@ -96,7 +96,7 @@ Vec3f Renderer::trace(const Vec3f & rayorig, const Vec3f & raydir, const std::ve
 	return surfaceColor + sphere->getEmissionsColor();
 }
 
-void Renderer::render(const std::vector<Sphere>& spheres, int iteration)
+void Renderer::render(const std::vector<Sphere>& spheres, int iteration, const char* folderName)
 {
 	// quick and dirty
 #ifdef _DEBUG
@@ -125,10 +125,10 @@ void Renderer::render(const std::vector<Sphere>& spheres, int iteration)
 	}
 	// Save result to a PPM image (keep these flags if you compile under Windows)
 	std::stringstream ss;
-	ss << "./spheres" << iteration << ".ppm";
+	ss << "./"<< folderName <<"/spheres" << iteration << ".ppm";
 	std::string tempString = ss.str();
 	char* filename = (char*)tempString.c_str();
-
+	
 	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 	ofs << "P6\n" << width << " " << height << "\n255\n";
 	for (unsigned i = 0; i < width * height; ++i) {
