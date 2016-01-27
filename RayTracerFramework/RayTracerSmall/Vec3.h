@@ -32,7 +32,8 @@ public:
 		os << "[" << v.x << " " << v.y << " " << v.z << "]";
 		return os;
 	}
-};
 
+	
+};
 typedef Vec3<float> Vec3f;
 
