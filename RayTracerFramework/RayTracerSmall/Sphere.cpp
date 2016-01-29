@@ -37,3 +37,18 @@ Vec3f Sphere::getSurfaceColor() const{ return surfaceColor; }
 Vec3f Sphere::getEmissionsColor() const{ return emissionColor; }
 float Sphere::getTransparency() const{ return transparency; }
 float Sphere::getReflection() const{ return reflection; }
+
+void Sphere::setCenter(Vec3f newPos)
+{
+	center = newPos;
+}
+
+void Sphere::Move(float x, float y, float z)
+{
+	Move(Vec3f(x, y, z));
+}
+
+void Sphere::Move(Vec3f amount)
+{
+	center += amount;
+}

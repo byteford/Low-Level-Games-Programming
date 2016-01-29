@@ -26,5 +26,9 @@ public:
 	Vec3f getEmissionsColor() const;
 	float getTransparency() const;
 	float getReflection() const;
+
+	void setCenter(Vec3f newPos);
+	void Move(float x, float y, float z);
+	void Move(Vec3f amount);
 };
 

@@ -102,7 +102,7 @@ void Renderer::render(const std::vector<Sphere>& spheres, int iteration, const c
 #ifdef _DEBUG
 	unsigned width = 640, height = 480;
 #else
-	unsigned width = 1920, height = 1080;
+	unsigned width = 3940, height = 2160;
 #endif
 	// Recommended Testing Resolution
 	//unsigned width = 640, height = 480;
@@ -111,7 +111,7 @@ void Renderer::render(const std::vector<Sphere>& spheres, int iteration, const c
 	//unsigned width = 1920, height = 1080;
 	Vec3f *image = new Vec3f[width * height], *pixel = image;
 	float invWidth = 1 / float(width), invHeight = 1 / float(height);
-	float fov = 30, aspectratio = width / float(height);
+	float fov = 80, aspectratio = width / float(height);
 	float angle = tan(M_PI * 0.5 * fov / 180.);
 	// Trace rays
 	for (unsigned y = 0; y < height; ++y) {
