@@ -1,4 +1,5 @@
 #pragma once
+#include "Scene.h"
 #include "Vec3.h"
 #include <vector>
 #include "Sphere.h"
@@ -7,6 +8,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+
 class Renderer
 {
 public:
@@ -18,6 +20,13 @@ public:
 		const Vec3f &raydir,
 		const std::vector<Sphere> &spheres,
 		const int &depth);
+	Vec3f trace(
+		const Vec3f &rayorig,
+		const Vec3f &raydir,
+		const Scene &scene,
+		const int &depth);
+
 	void render(const std::vector<Sphere> &spheres, int iteration, const char* folderName);
+	void render(const Scene &scene, int iteration, const char* folderName);
 };
 

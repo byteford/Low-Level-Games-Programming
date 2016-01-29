@@ -1,34 +1,44 @@
-﻿Build started 28/01/2016 11:20:29.
-     1>Project "E:\uni work\low level graphics\program\RayTracerFramework\RayTracerSmall\RayTracerSmall.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 29/01/2016 13:50:21.
+     1>Project "E:\uni work\low level graphics\program\RayTracerFramework\RayTracerSmall\RayTracerSmall.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D CODE_ANALYSIS /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze /analyze:plugin"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\\bin\localespc.dll" /errorReport:prompt   /analyze:quiet main.cpp Renderer.cpp Sphere.cpp
-         Sphere.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Renderer.cpp Scene.cpp main.cpp
+         Scene.cpp
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\definitions.h(8): warning C4005: 'INFINITY': macro redefinition
+         c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\math.h(78): note: see previous definition of 'INFINITY'
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.h(26): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.h(26): error C2143: syntax error: missing ',' before '&'
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.h(30): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.h(30): error C2143: syntax error: missing ',' before '&'
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\scene.cpp(20): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+         Generating Code...
+         Compiling...
          Renderer.cpp
      1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\definitions.h(8): warning C4005: 'INFINITY': macro redefinition
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\math.h(78): note: see previous definition of 'INFINITY'
      1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(46): warning C4305: 'initializing': truncation from 'double' to 'float'
      1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(52): warning C4305: 'argument': truncation from 'double' to 'const float'
      1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(61): warning C4305: 'initializing': truncation from 'double' to 'float'
-     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(115): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(119): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(120): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(105): warning C4018: '<': signed/unsigned mismatch
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(126): warning C4305: 'initializing': truncation from 'double' to 'float'
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(132): warning C4305: 'argument': truncation from 'double' to 'const float'
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(141): warning C4305: 'initializing': truncation from 'double' to 'float'
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(155): warning C4018: '<': signed/unsigned mismatch
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(161): warning C4018: '<': signed/unsigned mismatch
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(195): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(199): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(200): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(239): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(243): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\renderer.cpp(244): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+         Generating Code...
+         Compiling...
          main.cpp
      1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\definitions.h(8): warning C4005: 'INFINITY': macro redefinition
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\math.h(78): note: see previous definition of 'INFINITY'
-     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\main.cpp(45): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\main.cpp(46): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\main.cpp(47): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\main.cpp(48): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\main.cpp(49): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-         Running Code Analysis for C/C++...
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\main.cpp(50): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
          Generating Code...
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\uni work\low level graphics\program\RayTracerFramework\Debug\RayTracerSmall.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\uni work\low level graphics\program\RayTracerFramework\Debug\RayTracerSmall.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\uni work\low level graphics\program\RayTracerFramework\Debug\RayTracerSmall.lib" /MACHINE:X86 Debug\main.obj
-         Debug\Renderer.obj
-         Debug\Sphere.obj
-         RayTracerSmall.vcxproj -> E:\uni work\low level graphics\program\RayTracerFramework\Debug\RayTracerSmall.exe
-     1>Done Building Project "E:\uni work\low level graphics\program\RayTracerFramework\RayTracerSmall\RayTracerSmall.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "E:\uni work\low level graphics\program\RayTracerFramework\RayTracerSmall\RayTracerSmall.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:10.15
+Time Elapsed 00:00:01.65
