@@ -146,12 +146,14 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="SphScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="definitions.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="SphScene.h" />
     <ClInclude Include="Vec3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

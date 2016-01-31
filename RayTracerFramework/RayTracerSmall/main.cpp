@@ -35,7 +35,6 @@
 #include "definitions.h"
 #include "Renderer.h"
 
-#include "Scene.h"
 void SmoothScaling()
 {
 	std::vector<Sphere> spheres;
@@ -47,7 +46,7 @@ void SmoothScaling()
 		spheres.push_back(Sphere(Vec3f(0.0, 0, -10), r / 100, Vec3f(1.00f, 0.32f, 0.36f), 1, 0.5)); // Radius++ change here
 		spheres.push_back(Sphere(Vec3f(5.0, -1, -5), 2, Vec3f(0.90f, 0.76f, 0.46f), 1, 0.0));
 		spheres.push_back(Sphere(Vec3f(5.0, 0, -15), 3, Vec3f(0.65f, 0.77f, 0.97f), 1, 0.0));
-		rend.render(spheres, r, "help");
+		//rend.render(spheres, r, "help");
 		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
 		// Dont forget to clear the Vector holding the spheres.
 		spheres.clear();
@@ -67,14 +66,17 @@ int main(int argc, char **argv)
 	//SimpleShrinking();
 	//SmoothScaling();
 	
-	Scene sce;
+	SphScene sce;
 	Renderer rend;
 	//sce.SmoothScaling();
+
+
 
 	for (int r = 0; r <= 100; r++)
 	{
 		sce.Update();
-		rend.render(sce, r, "help");
+		rend.render(&sce, r, "help");
+		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
 	}
 
 	return 0;

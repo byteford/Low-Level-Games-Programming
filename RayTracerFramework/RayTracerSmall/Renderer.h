@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene.h"
+#include "SphScene.h"
 #include "Vec3.h"
 #include <vector>
 #include "Sphere.h"
@@ -15,18 +15,18 @@ public:
 	Renderer();
 	~Renderer();
 	float mix(const float &a, const float &b, const float &mix);
+	//Vec3f trace(
+	//	const Vec3f &rayorig,
+	//	const Vec3f &raydir,
+	//	const std::vector<Sphere> &spheres,
+	//	const int &depth);
 	Vec3f trace(
 		const Vec3f &rayorig,
 		const Vec3f &raydir,
-		const std::vector<Sphere> &spheres,
-		const int &depth);
-	Vec3f trace(
-		const Vec3f &rayorig,
-		const Vec3f &raydir,
-		const Scene &scene,
+		SphScene *scene,
 		const int &depth);
 
-	void render(const std::vector<Sphere> &spheres, int iteration, const char* folderName);
-	void render(const Scene &scene, int iteration, const char* folderName);
+	//void render(const std::vector<Sphere> &spheres, int iteration, const char* folderName);
+	void render(SphScene *scene, int iteration, const char* folderName);
 };
 
