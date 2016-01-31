@@ -23,10 +23,10 @@ public:
 	Vec3f trace(
 		const Vec3f &rayorig,
 		const Vec3f &raydir,
-		SphScene *scene,
+		SphScene scene,
 		const int &depth);
 
 	//void render(const std::vector<Sphere> &spheres, int iteration, const char* folderName);
-	void render(SphScene *scene, int iteration, const char* folderName);
+	void render(SphScene scene, int iteration, const char* folderName);
 };
 

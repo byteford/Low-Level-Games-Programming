@@ -96,19 +96,19 @@ float Renderer::mix(const float & a, const float & b, const float & mix)
 //	return surfaceColor + sphere->getEmissionsColor();
 //}
 
-Vec3f Renderer::trace(const Vec3f & rayorig, const Vec3f & raydir,SphScene * scene, const int & depth)
+Vec3f Renderer::trace(const Vec3f & rayorig, const Vec3f & raydir,SphScene scene, const int & depth)
 {
 	//if (raydir.length() != 1) std::cerr << "Error " << raydir << std::endl;
 	float tnear = INFINITY;
 	const Sphere* sphere = NULL;
 	// find intersection of this ray with the sphere in the scene
-	for (unsigned i = 0; i < scene->GetSize(); ++i) {
+	for (unsigned i = 0; i < scene.GetSize(); ++i) {
 		float t0 = INFINITY, t1 = INFINITY;
-		if (scene->getSphere(i).intersect(rayorig, raydir, t0, t1)) {
+		if (scene.getSphere(i).intersect(rayorig, raydir, t0, t1)) {
 			if (t0 < 0) t0 = t1;
 			if (t0 < tnear) {
 				tnear = t0;
-				sphere = &scene->getSphere(i);
+				sphere = &scene.getSphere(i);
 			}
 		}
 	}
@@ -152,23 +152,23 @@ Vec3f Renderer::trace(const Vec3f & rayorig, const Vec3f & raydir,SphScene * sce
 	}
 	else {
 		// it's a diffuse object, no need to raytrace any further
-		for (unsigned i = 0; i < scene->GetSize(); ++i) {
-			if (scene->getSphere(i).getEmissionsColor().x > 0) {
+		for (unsigned i = 0; i < scene.GetSize(); ++i) {
+			if (scene.getSphere(i).getEmissionsColor().x > 0) {
 				// this is a light
 				Vec3f transmission = 1;
-				Vec3f lightDirection = scene->getSphere(i).getCenter() - phit;
+				Vec3f lightDirection = scene.getSphere(i).getCenter() - phit;
 				lightDirection.normalize();
-				for (unsigned j = 0; j < scene->GetSize(); ++j) {
+				for (unsigned j = 0; j < scene.GetSize(); ++j) {
 					if (i != j) {
 						float t0, t1;
-						if (scene->getSphere(j).intersect(phit + nhit * bias, lightDirection, t0, t1)) {
+						if (scene.getSphere(j).intersect(phit + nhit * bias, lightDirection, t0, t1)) {
 							transmission = 0;
 							break;
 						}
 					}
 				}
 				surfaceColor += sphere->getSurfaceColor() * transmission *
-					std::max(float(0), nhit.dot(lightDirection)) * scene->getSphere(i).getEmissionsColor();
+					std::max(float(0), nhit.dot(lightDirection)) * scene.getSphere(i).getEmissionsColor();
 			}
 		}
 	}
@@ -220,13 +220,17 @@ Vec3f Renderer::trace(const Vec3f & rayorig, const Vec3f & raydir,SphScene * sce
 //	delete[] image;
 //}
 
-void Renderer::render(SphScene * scene, int iteration, const char * folderName)
+void Renderer::render(SphScene scene, int iteration, const char * folderName)
 {
 	// quick and dirty
 #ifdef _DEBUG
 	unsigned width = 640, height = 480;
 #else
+#ifdef _4K
 	unsigned width = 3940, height = 2160;
+#else
+	unsigned width = 1080, height = 1920;
+#endif
 #endif
 	// Recommended Testing Resolution
 	//unsigned width = 640, height = 480;
