@@ -229,7 +229,7 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 #ifdef _4K
 	unsigned width = 3940, height = 2160;
 #else
-	unsigned width = 1080, height = 1920;
+	unsigned width = 1920, height = 1080;
 #endif
 #endif
 	// Recommended Testing Resolution
