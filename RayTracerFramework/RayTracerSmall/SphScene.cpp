@@ -40,8 +40,10 @@ void SphScene::test(float temp, int test) {
 }
 void SphScene::RunCommand(Sphere* sph)
 {
+	std::vector<void(Sphere::*)(float)> temp;
+	temp.push_back(&Sphere::increaseRadius);
 	void(Sphere::*p_func)(float) = &Sphere::increaseRadius;
-	auto f = std::bind(p_func, sph, 0.01f);
+	auto f = std::bind(temp[0], sph, 0.01f);
 	f();
 	//p_func(0.01f);
 }
