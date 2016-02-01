@@ -35,6 +35,7 @@
 #include "definitions.h"
 #include "Renderer.h"
 
+
 void SmoothScaling()
 {
 	std::vector<Sphere> spheres;
@@ -74,6 +75,9 @@ int main(int argc, char **argv)
 	sce.AddSphere(Vec3f(0.0, 0, -10), 0, Vec3f(1.00f, 0.32f, 0.36f), 1, 0.5);
 	sce.AddSphere(Vec3f(5.0, -1, -5), 2, Vec3f(0.90f, 0.76f, 0.46f), 1, 0.0);
 	sce.AddSphere(Vec3f(5.0, 0, -15), 3, Vec3f(0.65f, 0.77f, 0.97f), 1, 0.0);
+
+
+
 
 	for (int r = 0; r <= 100; r++)
 	{

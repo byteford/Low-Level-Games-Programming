@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Sphere.h"
+#include <functional>
 class SphScene
 {
 private:
@@ -17,5 +18,7 @@ public:
 		const Vec3f &ec = 0);
 	Sphere getSphere(int num) const;
 	int GetSize() const;
+	void RunCommand(Sphere* sph);
+	void test(float temp, int test);
 };
 
