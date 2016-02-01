@@ -15,6 +15,7 @@ SphScene::~SphScene()
 
 void SphScene::Update()
 {
+	spheres->at(1).increaseRadius(0.01f);
 }
 
 void SphScene::AddSphere(const Vec3f & c, const float & r, const Vec3f & sc, const float & refl, const float & transp, const Vec3f & ec)

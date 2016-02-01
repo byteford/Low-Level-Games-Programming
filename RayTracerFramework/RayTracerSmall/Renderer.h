@@ -28,5 +28,7 @@ public:
 
 	//void render(const std::vector<Sphere> &spheres, int iteration, const char* folderName);
 	void render(SphScene scene, int iteration, const char* folderName);
+
+	const char * workOutInt(int itteration);
 };
 

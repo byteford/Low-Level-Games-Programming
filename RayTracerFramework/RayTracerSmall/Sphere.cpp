@@ -52,3 +52,14 @@ void Sphere::Move(Vec3f amount)
 {
 	center += amount;
 }
+
+void Sphere::SetRadius(float r)
+{
+	radius = r;
+	radius2 = r*r;
+}
+
+void Sphere::increaseRadius(float r)
+{
+	SetRadius(getRadius() + r);
+}

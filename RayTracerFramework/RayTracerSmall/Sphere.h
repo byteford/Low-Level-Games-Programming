@@ -30,5 +30,7 @@ public:
 	void setCenter(Vec3f newPos);
 	void Move(float x, float y, float z);
 	void Move(Vec3f amount);
+	void SetRadius(float r);
+	void increaseRadius(float r);
 };
 
