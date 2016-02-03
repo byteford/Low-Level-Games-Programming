@@ -35,25 +35,6 @@
 #include "definitions.h"
 #include "Renderer.h"
 
-
-void SmoothScaling()
-{
-	std::vector<Sphere> spheres;
-	// Vector structure for Sphere (position, radius, surface color, reflectivity, transparency, emission color)
-	Renderer rend;
-	for (float r = 0; r <= 100; r++)
-	{
-		spheres.push_back(Sphere(Vec3f(0.0, -10004, -10), 10000, Vec3f(0.20f, 0.20f, 0.20f), 1, 0.0));
-		spheres.push_back(Sphere(Vec3f(0.0, 0, -10), r / 100, Vec3f(1.00f, 0.32f, 0.36f), 1, 0.5)); // Radius++ change here
-		spheres.push_back(Sphere(Vec3f(5.0, -1, -5), 2, Vec3f(0.90f, 0.76f, 0.46f), 1, 0.0));
-		spheres.push_back(Sphere(Vec3f(5.0, 0, -15), 3, Vec3f(0.65f, 0.77f, 0.97f), 1, 0.0));
-		//rend.render(spheres, r, "help");
-		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
-		// Dont forget to clear the Vector holding the spheres.
-		spheres.clear();
-
-	}
-}
 //[comment]
 // In the main function, we will create the scene which is composed of 5 spheres
 // and 1 light (which is also a sphere). Then, once the scene description is complete
@@ -61,28 +42,32 @@ void SmoothScaling()
 //[/comment]
 int main(int argc, char **argv)
 {
-	// This sample only allows one choice per program execution. Feel free to improve upon this
 	srand(13);
-	//BasicRender();
-	//SimpleShrinking();
-	//SmoothScaling();
-	
+
 	SphScene sce;
 	Renderer rend;
-	//sce.SmoothScaling();
 
 	sce.AddSphere(Vec3f(0.0, -10004, -10), 10000, Vec3f(0.20f, 0.20f, 0.20f), 1, 0.0);
 	sce.AddSphere(Vec3f(0.0, 0, -10), 0, Vec3f(1.00f, 0.32f, 0.36f), 1, 0.5);
 	sce.AddSphere(Vec3f(5.0, -1, -5), 2, Vec3f(0.90f, 0.76f, 0.46f), 1, 0.0);
 	sce.AddSphere(Vec3f(5.0, 0, -15), 3, Vec3f(0.65f, 0.77f, 0.97f), 1, 0.0);
 
+	sce.AddCommand(&Sphere::increaseRadius,Vec3f(0.1f,0,0), sce.getSphereRef(1));
+	sce.AddCommand(&Sphere::Move, Vec3f(1, 0, 0), sce.getSphereRef(2));
+	
+	std::cout << system("cd Scene");
+	
+	system("mkdir SceneOut");
 
-
+	std::stringstream ss;
+	
+	ss << "mkdir sceneOut'\'25";
+	system(ss.str().c_str());
 
 	for (int r = 0; r <= 100; r++)
 	{
 		sce.Update();
-		rend.render(sce, r, "help");
+		rend.render(sce, r, "SceneOut");
 		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
 	}
 

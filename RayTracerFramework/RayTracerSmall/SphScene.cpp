@@ -16,8 +16,13 @@ SphScene::~SphScene()
 void SphScene::Update()
 {
 	//spheres->at(1).increaseRadius(0.01f);
-	RunCommand(&spheres->at(1));
-	
+	for (int i = 0; i < commands.size(); i++){
+		RunCommand(i);
+
+	}
+	//spheres->at(2).Move(Vec3f(1, 0, 0));
+	/*RunCommand(0);
+	RunCommand(1);*/
 }
 
 void SphScene::AddSphere(const Vec3f & c, const float & r, const Vec3f & sc, const float & refl, const float & transp, const Vec3f & ec)
@@ -30,20 +35,24 @@ Sphere SphScene::getSphere(int num) const
 	return (*spheres)[num];
 }
 
+Sphere* SphScene::getSphereRef(int num){
+	return &spheres->at(num);
+}
+
 int SphScene::GetSize() const
 {
 	return spheres->size();
 }
-void SphScene::test(float temp, int test) {
-
-
+void SphScene::AddCommand(void(Sphere::*method)(Vec3f), Vec3f arg, Sphere* sph){
+	commands.push_back(Command(method, arg, sph));
 }
-void SphScene::RunCommand(Sphere* sph)
+void SphScene::RunCommand(int commandNo)
 {
-	std::vector<void(Sphere::*)(float)> temp;
+	commands[commandNo].RunCommand();
+	/*void(Sphere::*)(Vec3f) temp;
 	temp.push_back(&Sphere::increaseRadius);
 	void(Sphere::*p_func)(float) = &Sphere::increaseRadius;
 	auto f = std::bind(temp[0], sph, 0.01f);
-	f();
+	f();*/
 	//p_func(0.01f);
 }

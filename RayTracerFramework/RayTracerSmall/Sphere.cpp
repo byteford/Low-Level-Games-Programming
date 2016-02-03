@@ -58,8 +58,13 @@ void Sphere::SetRadius(float r)
 	radius = r;
 	radius2 = r*r;
 }
-
+void Sphere::SetRadius(Vec3f r){
+	SetRadius(r.x);
+}
 void Sphere::increaseRadius(float r)
 {
 	SetRadius(getRadius() + r);
+}
+void Sphere::increaseRadius(Vec3f r){
+	increaseRadius(r.x);
 }

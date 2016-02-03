@@ -2,10 +2,12 @@
 #include <vector>
 #include "Sphere.h"
 #include <functional>
+#include "Command.h"
 class SphScene
 {
 private:
 	std::vector<Sphere>* spheres;
+	std::vector<Command> commands;
 public:
 	SphScene();
 	~SphScene();
@@ -17,8 +19,9 @@ public:
 		const float &transp = 0,
 		const Vec3f &ec = 0);
 	Sphere getSphere(int num) const;
+	Sphere* getSphereRef(int num);
 	int GetSize() const;
-	void RunCommand(Sphere* sph);
-	void test(float temp, int test);
+	void AddCommand(void(Sphere::*method)(Vec3f), Vec3f arg, Sphere* sph);
+	void RunCommand(int commandNo);
 };
 

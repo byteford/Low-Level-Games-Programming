@@ -31,6 +31,8 @@ public:
 	void Move(float x, float y, float z);
 	void Move(Vec3f amount);
 	void SetRadius(float r);
+	void SetRadius(Vec3f amount);
 	void increaseRadius(float r);
+	void increaseRadius(Vec3f amount);
 };
 
