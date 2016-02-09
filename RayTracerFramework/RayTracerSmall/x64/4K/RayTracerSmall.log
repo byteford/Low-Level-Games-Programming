@@ -1,0 +1,37 @@
+﻿Build started 09/02/2016 11:51:23.
+     1>Project "E:\uni work\low level graphics\program\RayTracerFramework\RayTracerSmall\RayTracerSmall.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Ox /Oi /GL /D NDEBUG /D _CONSOLE /D _4K /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\4K\\" /Fd"x64\4K\vc120.pdb" /Gd /TP /errorReport:prompt Command.cpp main.cpp Renderer.cpp Sphere.cpp SphScene.cpp
+         Command.cpp
+         main.cpp
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\definitions.h(8): warning C4005: 'INFINITY' : macro redefinition
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\math.h(102) : see previous definition of 'INFINITY'
+         Renderer.cpp
+     1>e:\uni work\low level graphics\program\raytracerframework\raytracersmall\definitions.h(8): warning C4005: 'INFINITY' : macro redefinition
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\math.h(102) : see previous definition of 'INFINITY'
+     1>Renderer.cpp(26): warning C4018: '<' : signed/unsigned mismatch
+     1>Renderer.cpp(47): warning C4305: 'initializing' : truncation from 'double' to 'float'
+     1>Renderer.cpp(53): warning C4305: 'argument' : truncation from 'double' to 'const float'
+     1>Renderer.cpp(62): warning C4305: 'initializing' : truncation from 'double' to 'float'
+     1>Renderer.cpp(76): warning C4018: '<' : signed/unsigned mismatch
+     1>Renderer.cpp(82): warning C4018: '<' : signed/unsigned mismatch
+     1>Renderer.cpp(121): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>Renderer.cpp(125): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>Renderer.cpp(126): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         Sphere.cpp
+         SphScene.cpp
+     1>SphScene.cpp(44): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"E:\uni work\low level graphics\program\RayTracerFramework\x64\4K\RayTracerSmall.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\uni work\low level graphics\program\RayTracerFramework\x64\4K\RayTracerSmall.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\uni work\low level graphics\program\RayTracerFramework\x64\4K\RayTracerSmall.lib" /MACHINE:X64 x64\4K\Command.obj
+         x64\4K\main.obj
+         x64\4K\Renderer.obj
+         x64\4K\Sphere.obj
+         x64\4K\SphScene.obj
+         Generating code
+         Finished generating code
+         RayTracerSmall.vcxproj -> E:\uni work\low level graphics\program\RayTracerFramework\x64\4K\RayTracerSmall.exe
+     1>Done Building Project "E:\uni work\low level graphics\program\RayTracerFramework\RayTracerSmall\RayTracerSmall.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.56

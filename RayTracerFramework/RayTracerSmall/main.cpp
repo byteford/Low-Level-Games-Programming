@@ -35,6 +35,9 @@
 #include "definitions.h"
 #include "Renderer.h"
 
+#include <chrono>
+#include <time.h>
+
 //[comment]
 // In the main function, we will create the scene which is composed of 5 spheres
 // and 1 light (which is also a sphere). Then, once the scene description is complete
@@ -55,19 +58,20 @@ int main(int argc, char **argv)
 	sce.AddCommand(&Sphere::increaseRadius,Vec3f(0.1f,0,0), sce.getSphereRef(1));
 	sce.AddCommand(&Sphere::Move, Vec3f(1, 0, 0), sce.getSphereRef(2));
 	
-	std::cout << system("cd Scene");
 	
-	system("mkdir SceneOut");
+	std::stringstream folder;
+	//time_t now = time(0);
+	folder << "SceneOut\\" << time(0);
 
 	std::stringstream ss;
 	
-	ss << "mkdir sceneOut'\'25";
+	ss << "mkdir "<< folder.str();
 	system(ss.str().c_str());
 
 	for (int r = 0; r <= 100; r++)
 	{
 		sce.Update();
-		rend.render(sce, r, "SceneOut");
+		rend.render(sce, r, folder.str().c_str());
 		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
 	}
 
