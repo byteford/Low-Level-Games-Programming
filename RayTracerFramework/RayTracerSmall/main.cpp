@@ -47,16 +47,38 @@ int main(int argc, char **argv)
 {
 	srand(13);
 
+	int frameRate = 1;
+	int seconds = 10;
+	
+	std::stringstream cons;
+	for (int i = 0; i < argc;i++)
+	{
+		
+		cons.str(argv[i]);
+		if (cons.str() == "-fr"){
+			frameRate = std::atoi(argv[i + 1]);
+			std::cout << frameRate << "\n";
+		}
+		else if (cons.str() == "-s"){
+			seconds = std::atoi(argv[i + 1]);
+			std::cout << seconds << "\n";
+		}
+	}
+	int frames = frameRate * seconds;
+
+
 	SphScene sce;
 	Renderer rend;
 
-	sce.AddSphere(Vec3f(0.0, -10004, -10), 10000, Vec3f(0.20f, 0.20f, 0.20f), 1, 0.0);
-	sce.AddSphere(Vec3f(0.0, 0, -10), 0, Vec3f(1.00f, 0.32f, 0.36f), 1, 0.5);
-	sce.AddSphere(Vec3f(5.0, -1, -5), 2, Vec3f(0.90f, 0.76f, 0.46f), 1, 0.0);
-	sce.AddSphere(Vec3f(5.0, 0, -15), 3, Vec3f(0.65f, 0.77f, 0.97f), 1, 0.0);
+	sce.LoadSpheresFromFile();
 
-	sce.AddCommand(&Sphere::increaseRadius,Vec3f(0.1f,0,0), sce.getSphereRef(1));
-	sce.AddCommand(&Sphere::Move, Vec3f(1, 0, 0), sce.getSphereRef(2));
+	//sce.AddSphere(Vec3f(0.0, -10004, -10), 10000, Vec3f(0.20f, 0.20f, 0.20f), 1, 0.0);
+	//sce.AddSphere(Vec3f(0.0, 0, -10), 0, Vec3f(1.00f, 0.32f, 0.36f), 1, 0.5);
+	//sce.AddSphere(Vec3f(5.0, -1, -5), 2, Vec3f(0.90f, 0.76f, 0.46f), 1, 0.0);
+	//sce.AddSphere(Vec3f(5.0, 0, -15), 3, Vec3f(0.65f, 0.77f, 0.97f), 1, 0.0);
+
+	//sce.AddCommand(&Sphere::increaseRadius,Vec3f(0.1f,0,0), sce.getSphereRef(1));
+	//sce.AddCommand(&Sphere::Move, Vec3f(1, 0, 0), sce.getSphereRef(2));
 	
 	
 	std::stringstream folder;
@@ -68,13 +90,26 @@ int main(int argc, char **argv)
 	ss << "mkdir "<< folder.str();
 	system(ss.str().c_str());
 
-	for (int r = 0; r <= 100; r++)
+	for (int r = 0; r <= frames; r++)
 	{
 		sce.Update();
 		rend.render(sce, r, folder.str().c_str());
 		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
 	}
-
+#ifdef _DEBUG
+	std::stringstream ffmp;
+	ffmp << "ffmpeg -f image2 -r "<< frameRate<<" -i " << folder.str() << "\\spheres%d.ppm -b 600k " << folder.str()<< "\\out.mp4";
+	//ffmp << "ffmpeg";
+	std::cout << ffmp.str();
+	system(ffmp.str().c_str());
+#else
+	std::stringstream ffmp;
+	ffmp << "ffmpeg -f image2 -r " << frameRate << " -i " << folder.str() << "\\spheres%d.ppm -b 600k " << folder.str() << "\\out.mp4";
+	//ffmp << "ffmpeg";
+	std::cout << ffmp.str();
+	system(ffmp.str().c_str());
+#endif
+	system("pause");
 	return 0;
 }
 

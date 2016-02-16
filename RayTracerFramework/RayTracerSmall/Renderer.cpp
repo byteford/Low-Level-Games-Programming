@@ -100,9 +100,9 @@ Vec3f Renderer::trace(const Vec3f & rayorig, const Vec3f & raydir,SphScene scene
 
 void Renderer::render(SphScene scene, int iteration, const char * folderName)
 {
-	// quick and dirty
+
 #ifdef _DEBUG
-	unsigned width = 640, height = 480;
+	unsigned width = 480, height = 640;
 #else
 #ifdef _4K
 	unsigned width = 3940, height = 2160;
@@ -110,11 +110,7 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 	unsigned width = 1920, height = 1080;
 #endif
 #endif
-	// Recommended Testing Resolution
-	//unsigned width = 640, height = 480;
 
-	// Recommended Production Resolution
-	//unsigned width = 1920, height = 1080;
 	Vec3f *image = new Vec3f[width * height], *pixel = image;
 	float invWidth = 1 / float(width), invHeight = 1 / float(height);
 	float fov = 80, aspectratio = width / float(height);
@@ -160,5 +156,5 @@ const char * Renderer::workOutInt(int iteration)
 	else if(iteration < 1000){
 		temp = "0" ;
 	}
-	return temp;
+	return "";
 }

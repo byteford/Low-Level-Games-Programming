@@ -12,4 +12,4 @@
 //[comment]
 // This variable controls the maximum recursion depth
 //[/comment]
-#define MAX_RAY_DEPTH 5
+#define MAX_RAY_DEPTH 2

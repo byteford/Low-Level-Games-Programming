@@ -68,3 +68,10 @@ void Sphere::increaseRadius(float r)
 void Sphere::increaseRadius(Vec3f r){
 	increaseRadius(r.x);
 }
+
+std::string Sphere::ToString()
+{
+	std::stringstream ss;
+	ss << "pos: " << getCenter() << " radius: " << getRadius() << " SurfaceColour: " << getSurfaceColor() << " Reflect: " << getReflection() << " Transparency: " << getTransparency() << " Emission: " << getEmissionsColor() << "\n";
+	return ss.str();
+}

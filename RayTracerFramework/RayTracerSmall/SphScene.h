@@ -3,6 +3,9 @@
 #include "Sphere.h"
 #include <functional>
 #include "Command.h"
+#include <sstream>
+#include <iostream>
+#include <fstream>
 class SphScene
 {
 private:
@@ -23,5 +26,7 @@ public:
 	int GetSize() const;
 	void AddCommand(void(Sphere::*method)(Vec3f), Vec3f arg, Sphere* sph);
 	void RunCommand(int commandNo);
+	void LoadSpheresFromFile();
+	void AddSphere(std::string str);
 };
 

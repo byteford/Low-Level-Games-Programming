@@ -1,6 +1,7 @@
 #pragma once
 #include "Vec3.h"
 #include <cmath>
+#include <sstream>
 class Sphere
 {
 	typedef Vec3<float> Vec3f;
@@ -34,5 +35,6 @@ public:
 	void SetRadius(Vec3f amount);
 	void increaseRadius(float r);
 	void increaseRadius(Vec3f amount);
+	std::string ToString();
 };
 
