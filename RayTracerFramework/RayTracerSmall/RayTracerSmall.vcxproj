@@ -210,15 +210,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Command.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MoveCom.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SphScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Command.h" />
     <ClInclude Include="definitions.h" />
+    <ClInclude Include="MoveCom.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SphScene.h" />

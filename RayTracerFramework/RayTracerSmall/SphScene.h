@@ -2,19 +2,19 @@
 #include <vector>
 #include "Sphere.h"
 #include <functional>
-#include "Command.h"
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include "MoveCom.h"
 class SphScene
 {
 private:
 	std::vector<Sphere>* spheres;
-	std::vector<Command> commands;
+	std::vector<MoveCom> moves;
 public:
 	SphScene();
 	~SphScene();
-	void Update();
+	void Update(int frameNum);
 	void AddSphere(const Vec3f &c,
 		const float &r,
 		const Vec3f &sc,
@@ -24,9 +24,8 @@ public:
 	Sphere getSphere(int num) const;
 	Sphere* getSphereRef(int num);
 	int GetSize() const;
-	void AddCommand(void(Sphere::*method)(Vec3f), Vec3f arg, Sphere* sph);
-	void RunCommand(int commandNo);
 	void LoadSpheresFromFile();
 	void AddSphere(std::string str);
+	void LoadMove(std::string str);
 };
 

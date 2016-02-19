@@ -102,7 +102,7 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 {
 
 #ifdef _DEBUG
-	unsigned width = 480, height = 640;
+	unsigned width = 640, height = 480;
 #else
 #ifdef _4K
 	unsigned width = 3940, height = 2160;

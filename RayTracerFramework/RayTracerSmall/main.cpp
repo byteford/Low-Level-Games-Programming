@@ -38,67 +38,49 @@
 #include <chrono>
 #include <time.h>
 
-//[comment]
-// In the main function, we will create the scene which is composed of 5 spheres
-// and 1 light (which is also a sphere). Then, once the scene description is complete
-// we render that scene, by calling the render() function.
-//[/comment]
-int main(int argc, char **argv)
-{
-	srand(13);
+SphScene sce;
+Renderer rend;
 
-	int frameRate = 1;
-	int seconds = 10;
-	
+std::stringstream folder;
+
+int frames;
+int frameRate;
+int seconds;
+void SetThingsUp(int argc, char **argv) {
+
 	std::stringstream cons;
 	for (int i = 0; i < argc;i++)
 	{
-		
+
 		cons.str(argv[i]);
-		if (cons.str() == "-fr"){
+		if (cons.str() == "-fr") {
 			frameRate = std::atoi(argv[i + 1]);
 			std::cout << frameRate << "\n";
 		}
-		else if (cons.str() == "-s"){
+		else if (cons.str() == "-s") {
 			seconds = std::atoi(argv[i + 1]);
 			std::cout << seconds << "\n";
 		}
 	}
-	int frames = frameRate * seconds;
+	frames = frameRate * seconds;
 
-
-	SphScene sce;
-	Renderer rend;
 
 	sce.LoadSpheresFromFile();
 
-	//sce.AddSphere(Vec3f(0.0, -10004, -10), 10000, Vec3f(0.20f, 0.20f, 0.20f), 1, 0.0);
-	//sce.AddSphere(Vec3f(0.0, 0, -10), 0, Vec3f(1.00f, 0.32f, 0.36f), 1, 0.5);
-	//sce.AddSphere(Vec3f(5.0, -1, -5), 2, Vec3f(0.90f, 0.76f, 0.46f), 1, 0.0);
-	//sce.AddSphere(Vec3f(5.0, 0, -15), 3, Vec3f(0.65f, 0.77f, 0.97f), 1, 0.0);
-
-	//sce.AddCommand(&Sphere::increaseRadius,Vec3f(0.1f,0,0), sce.getSphereRef(1));
-	//sce.AddCommand(&Sphere::Move, Vec3f(1, 0, 0), sce.getSphereRef(2));
 	
-	
-	std::stringstream folder;
 	//time_t now = time(0);
 	folder << "SceneOut\\" << time(0);
 
 	std::stringstream ss;
-	
-	ss << "mkdir "<< folder.str();
+
+	ss << "mkdir " << folder.str();
 	system(ss.str().c_str());
 
-	for (int r = 0; r <= frames; r++)
-	{
-		sce.Update();
-		rend.render(sce, r, folder.str().c_str());
-		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
-	}
+}
+void PostStuff() {
 #ifdef _DEBUG
 	std::stringstream ffmp;
-	ffmp << "ffmpeg -f image2 -r "<< frameRate<<" -i " << folder.str() << "\\spheres%d.ppm -b 600k " << folder.str()<< "\\out.mp4";
+	ffmp << "ffmpeg -f image2 -r " << frameRate << " -i " << folder.str() << "\\spheres%d.ppm -b 600k " << folder.str() << "\\out.mp4";
 	//ffmp << "ffmpeg";
 	std::cout << ffmp.str();
 	system(ffmp.str().c_str());
@@ -109,6 +91,24 @@ int main(int argc, char **argv)
 	std::cout << ffmp.str();
 	system(ffmp.str().c_str());
 #endif
+
+}
+void UpdateLoop() {
+	for (int r = 0; r <= frames; r++)
+	{
+		sce.Update(r);
+		rend.render(sce, r, folder.str().c_str());
+		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
+	}
+}
+int main(int argc, char **argv)
+{
+	srand(13);
+	frameRate = 1;
+	seconds = 10;
+	SetThingsUp(argc, argv);
+	UpdateLoop();
+	PostStuff();
 	system("pause");
 	return 0;
 }
