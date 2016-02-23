@@ -121,15 +121,7 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 	float fov = 80, aspectratio = width / float(height);
 	float angle = tan(M_PI * 0.5 * fov / 180.);
 	// Trace rays
-	/*for (unsigned y = 0; y < height; ++y) {
-		for (unsigned x = 0; x < width; ++x, ++pixel) {
-			float xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio;
-			float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
-			Vec3f raydir(xx, yy, -1);
-			raydir.normalize();
-			*pixel = trace(Vec3f(0), raydir, scene, 0);
-		}
-	}*/
+
 	ThreadRend(width, height, angle, aspectratio, invWidth, invHeight, scene, pixel);
 
 	// Save result to a PPM image (keep these flags if you compile under Windows)
@@ -151,44 +143,22 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 	delete[] image;
 }
 void Renderer::ThreadRend(unsigned width, unsigned height, float angle, float aspectratio, float invWidth, float invHeight, SphScene& scene, Vec3f* pixel){
-	//std::thread threadPool[4];
-	/*for (unsigned y = 0; y < height; ++y) {
-		for (unsigned x = 0; x < width; ++x) {
-
-			float xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio;
-			float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
-			Vec3f raydir(xx, yy, -1);
-			raydir.normalize();
-			traceThread(Vec3f(0), raydir, scene, 0, y, width, x);
-		}
-	}*/
+	//run insted of loops to turn off threading
 	//ThreadSplitter(0, height, 0,width, width, scene, invWidth, invHeight, angle, aspectratio);
 
 	
 	int hightPer = height/5, widthPer = width/5;
-
-
 	std::thread threadPool[5*5];
 	for (int i = 0; i < 5; ++i){
 		for (int j = 0; j < 5; ++j){
-			//std::cout << (i * 5 + j) << "\n";
 			threadPool[(i*5)+j] = std::thread(&Renderer::ThreadSplitter, this, i*hightPer, (i + 1)*hightPer, j*widthPer, (j + 1)*widthPer, width, scene, invWidth, invHeight, angle, aspectratio);
 			
 		}
 	}
 	for (int i = 0; i < (5*5); ++i){
 		threadPool[i].join();
-		//std::cout << i;
 	}
-	
 
-	//for (int i = 0; i < 5; ++i) {
-	//	for (int j = 0; j < 5; ++j) {
-			//std::cout << (i * 5 + j) << "\n";
-			//ThreadSplitter(0, height, 0,width, width, scene, invWidth, invHeight, angle, aspectratio);
-
-	//	}
-	//}
 }
 void Renderer::ThreadSplitter(unsigned startHeight, unsigned height, unsigned startWidth, unsigned width, unsigned Totalwidth, SphScene& scene, float invWidth, float invHeight, float angle, float aspectratio){
 	for (unsigned y = startHeight; y < height; ++y) {

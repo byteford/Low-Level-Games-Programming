@@ -1,4 +1,4 @@
-﻿Build started 23/02/2016 16:18:47.
+﻿Build started 23/02/2016 16:38:17.
      1>Project "E:\uni work\low level graphics\program\RayTracerFramework\RayTracerSmall\RayTracerSmall.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /GL /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt Renderer.cpp
@@ -12,8 +12,8 @@
      1>Renderer.cpp(76): warning C4018: '<' : signed/unsigned mismatch
      1>Renderer.cpp(82): warning C4018: '<' : signed/unsigned mismatch
      1>Renderer.cpp(122): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>Renderer.cpp(197): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>Renderer.cpp(198): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>Renderer.cpp(167): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>Renderer.cpp(168): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"E:\uni work\low level graphics\program\RayTracerFramework\x64\Release\RayTracerSmall.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\uni work\low level graphics\program\RayTracerFramework\x64\Release\RayTracerSmall.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\uni work\low level graphics\program\RayTracerFramework\x64\Release\RayTracerSmall.lib" /MACHINE:X64 x64\Release\main.obj
          x64\Release\MoveCom.obj
@@ -27,4 +27,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.28
+Time Elapsed 00:00:02.69
