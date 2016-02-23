@@ -9,11 +9,14 @@
 #include <string>
 #include <sstream>
 
+#include <thread>
+#include <future>
 class Renderer
 {
 public:
 	Renderer();
 	~Renderer();
+	Vec3f* pixel;
 	float mix(const float &a, const float &b, const float &mix);
 	//Vec3f trace(
 	//	const Vec3f &rayorig,
@@ -25,10 +28,28 @@ public:
 		const Vec3f &raydir,
 		SphScene scene,
 		const int &depth);
-
+	void traceThread(
+		const Vec3f &rayorig,
+		const Vec3f &raydir,
+		SphScene scene,
+		const int &depth,
+		int y,
+		int width,
+		int x);
 	//void render(const std::vector<Sphere> &spheres, int iteration, const char* folderName);
 	void render(SphScene scene, int iteration, const char* folderName);
-
+	void ThreadRend(unsigned width, 
+		unsigned height, 
+		float angle, 
+		float aspectratio, 
+		float FOV, float invWidth, float invHeight, SphScene& scene, Vec3f* pixel);
+	void ThreadSplitter(int startHeight, 
+		int endHeight, 
+		int startWidth, 
+		int endWidth, 
+		int Width,
+		SphScene& scene,
+		int invWidth, int invHeight, int angle, int aspectratio);
 	const char * workOutInt(int itteration);
 };
 

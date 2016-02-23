@@ -97,7 +97,10 @@ Vec3f Renderer::trace(const Vec3f & rayorig, const Vec3f & raydir,SphScene scene
 	return surfaceColor + sphere->getEmissionsColor();
 }
 
-
+void Renderer::traceThread(const Vec3f &rayorig, const Vec3f &raydir, SphScene scene, const int &depth, int y, int width, int x){
+	//trace(rayorig, raydir, scene, depth);
+	pixel[y*width + x] = trace(rayorig, raydir, scene, depth);
+}
 void Renderer::render(SphScene scene, int iteration, const char * folderName)
 {
 
@@ -111,12 +114,13 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 #endif
 #endif
 
-	Vec3f *image = new Vec3f[width * height], *pixel = image;
+	Vec3f *image = new Vec3f[width * height];
+	pixel = image;
 	float invWidth = 1 / float(width), invHeight = 1 / float(height);
 	float fov = 80, aspectratio = width / float(height);
 	float angle = tan(M_PI * 0.5 * fov / 180.);
 	// Trace rays
-	for (unsigned y = 0; y < height; ++y) {
+	/*for (unsigned y = 0; y < height; ++y) {
 		for (unsigned x = 0; x < width; ++x, ++pixel) {
 			float xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio;
 			float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
@@ -124,7 +128,10 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 			raydir.normalize();
 			*pixel = trace(Vec3f(0), raydir, scene, 0);
 		}
-	}
+	}*/
+
+	ThreadRend(width, height, angle, aspectratio, fov, invWidth, invHeight, scene, pixel);
+
 	// Save result to a PPM image (keep these flags if you compile under Windows)
 	std::stringstream ss;
 
@@ -143,7 +150,41 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 	ofs.close();
 	delete[] image;
 }
+void Renderer::ThreadRend(unsigned width, unsigned height, float angle, float aspectratio, float FOV, float invWidth, float invHeight, SphScene& scene, Vec3f* pixel){
+	//std::thread threadPool[4];
+	/*for (unsigned y = 0; y < height; ++y) {
+		for (unsigned x = 0; x < width; ++x) {
 
+			float xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio;
+			float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
+			Vec3f raydir(xx, yy, -1);
+			raydir.normalize();
+			traceThread(Vec3f(0), raydir, scene, 0, y, width, x);
+		}
+	}*/
+	std::thread threadPool[10];
+	int hightPer = height/5, widthPer = width/5;
+	for (int i = 0; i < 5; i++){
+		for (int j = 0; i < 5; j++){
+			threadPool[j*5+i] = std::thread(&Renderer::ThreadSplitter, this, i*hightPer, (i + 1)*hightPer, j*widthPer, (j + 1)*widthPer, width, scene, invWidth, invHeight, angle, aspectratio);
+		}
+	}
+	for (int i = 0; i < 10; i++){
+		threadPool[i].join();
+	}
+}
+void Renderer::ThreadSplitter(int startHeight, int endHeight, int startWidth, int endWidth, int Width, SphScene& scene, int invWidth, int invHeight, int angle, int aspectratio){
+	for (unsigned y = startHeight; y < endHeight; ++y) {
+		for (unsigned x = startWidth; x < endWidth; ++x) {
+
+			float xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio;
+			float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
+			Vec3f raydir(xx, yy, -1);
+			raydir.normalize();
+			traceThread(Vec3f(0), raydir, scene, 0, y, Width, x);
+		}
+	}
+}
 const char * Renderer::workOutInt(int iteration)
 {
 	const char* temp = (const char*)iteration;
