@@ -10,7 +10,7 @@ class SphScene
 {
 private:
 	std::vector<Sphere>* spheres;
-	std::vector<MoveCom> moves;
+	std::vector<MoveCom>* moves;
 public:
 	SphScene();
 	~SphScene();

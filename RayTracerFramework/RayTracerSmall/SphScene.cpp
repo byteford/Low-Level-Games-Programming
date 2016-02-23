@@ -5,6 +5,7 @@
 SphScene::SphScene()
 {
 	spheres = new std::vector<Sphere>();
+	moves = new std::vector<MoveCom>();
 }
 
 
@@ -15,7 +16,7 @@ SphScene::~SphScene()
 
 void SphScene::Update(int frameNum)
 {
-	for each (MoveCom move in moves)
+	for each (MoveCom move in *moves)
 	{
 		spheres->at(move.GetSphere()).Move(move.GetPosAtFrame(frameNum));
 	}
@@ -176,6 +177,6 @@ void SphScene::LoadMove(std::string str)
 	endLoc = str.find(" ", StartLoc + 1);
 	info = str.substr(StartLoc + 1, (endLoc - 1));
 	z = std::stof(info.c_str());
-	moves.push_back(MoveCom(startFrame, endFrame, sphere, x, y, z));
+	moves->push_back(MoveCom(startFrame, endFrame, sphere, x, y, z));
 	std::cout << startFrame << endFrame << sphere << x << y << z << "\n";
 }
