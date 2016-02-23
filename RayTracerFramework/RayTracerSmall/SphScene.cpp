@@ -177,5 +177,5 @@ void SphScene::LoadMove(std::string str)
 	info = str.substr(StartLoc + 1, (endLoc - 1));
 	z = std::stof(info.c_str());
 	moves.push_back(MoveCom(startFrame, endFrame, sphere, x, y, z));
-	std::cout << startFrame << endFrame << sphere << x << y << z;
+	std::cout << startFrame << endFrame << sphere << x << y << z << "\n";
 }

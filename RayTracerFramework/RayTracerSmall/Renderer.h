@@ -42,14 +42,14 @@ public:
 		unsigned height, 
 		float angle, 
 		float aspectratio, 
-		float FOV, float invWidth, float invHeight, SphScene& scene, Vec3f* pixel);
-	void ThreadSplitter(int startHeight, 
-		int endHeight, 
-		int startWidth, 
-		int endWidth, 
-		int Width,
+		float invWidth, float invHeight, SphScene& scene, Vec3f* pixel);
+	void ThreadSplitter(unsigned startHeight,
+		unsigned endHeight,
+		unsigned startWidth,
+		unsigned endWidth,
+		unsigned Width,
 		SphScene& scene,
-		int invWidth, int invHeight, int angle, int aspectratio);
+		float invWidth, float invHeight, float angle, float aspectratio);
 	const char * workOutInt(int itteration);
 };
 

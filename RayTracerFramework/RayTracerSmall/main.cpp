@@ -43,6 +43,10 @@ Renderer rend;
 
 std::stringstream folder;
 
+std::chrono::time_point<std::chrono::system_clock> start;
+std::chrono::time_point<std::chrono::system_clock> end;
+std::chrono::duration<double> total_elapsed_time;
+
 int frames;
 int frameRate;
 int seconds;
@@ -78,6 +82,7 @@ void SetThingsUp(int argc, char **argv) {
 
 }
 void PostStuff() {
+	start = std::chrono::system_clock::now();
 #ifdef _DEBUG
 	std::stringstream ffmp;
 	ffmp << "ffmpeg -f image2 -r " << frameRate << " -i " << folder.str() << "\\spheres%d.ppm -b 600k " << folder.str() << "\\out.mp4";
@@ -91,20 +96,35 @@ void PostStuff() {
 	std::cout << ffmp.str();
 	system(ffmp.str().c_str());
 #endif
-
+	end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_time = end - start;
+	total_elapsed_time += elapsed_time;
+	//std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+	std::cout << "**********************" << std::endl;
+	std::cout << "Finished video render in " << elapsed_time.count() << std::endl;
+	std::cout << "**********************" << std::endl;
+	std::cout << "**********************" << std::endl;
+	std::cout << "Total Render Time: " << total_elapsed_time.count() << std::endl;
+	std::cout << "**********************" << std::endl;
 }
 void UpdateLoop() {
 	for (int r = 0; r <= frames; r++)
 	{
 		sce.Update(r);
+		std::cout << "Start Render \n";
+		start = std::chrono::system_clock::now();
 		rend.render(sce, r, folder.str().c_str());
-		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
+		end = std::chrono::system_clock::now();
+		std::chrono::duration<double> elapsed_time = end - start;
+		total_elapsed_time += elapsed_time;
+		std::cout << "Finished image "<< r <<" render in " << elapsed_time.count()<< std::endl;
+		//std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
 	}
 }
 int main(int argc, char **argv)
 {
 	srand(13);
-	frameRate = 1;
+	frameRate = 10;
 	seconds = 10;
 	SetThingsUp(argc, argv);
 	UpdateLoop();
