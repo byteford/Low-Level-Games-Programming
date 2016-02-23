@@ -25,7 +25,8 @@ Vec3f Renderer::trace(const Vec3f & rayorig, const Vec3f & raydir,SphScene scene
 	// find intersection of this ray with the sphere in the scene
 	for (unsigned i = 0; i < scene.GetSize(); ++i) {
 		float t0 = INFINITY, t1 = INFINITY;
-		if (scene.getSphere(i).intersect(rayorig, raydir, t0, t1)) {
+		//if (scene.getSphere(i).intersect(rayorig, raydir, t0, t1)) {
+		if(scene.DoesSphereIntersect(i,rayorig,raydir,t0,t1)){
 			if (t0 < 0) t0 = t1;
 			if (t0 < tnear) {
 				tnear = t0;
@@ -168,7 +169,7 @@ void Renderer::ThreadSplitter(unsigned startHeight, unsigned height, unsigned st
 			float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
 			Vec3f raydir(xx, yy, -1);
 			raydir.normalize();
-			traceThread(Vec3f(0), raydir, scene, 0, y, width, x);
+			traceThread(Vec3f(0), raydir, scene, 0, y, Totalwidth, x);
 		}
 	}
 }

@@ -22,6 +22,7 @@ public:
 		const float &transp = 0,
 		const Vec3f &ec = 0);
 	Sphere getSphere(int num) const;
+	bool DoesSphereIntersect(int sphereNum, const Vec3f &rayorig, const Vec3f &raydir, float &t0, float &t1) const;
 	Sphere* getSphereRef(int num);
 	int GetSize() const;
 	void LoadSpheresFromFile();

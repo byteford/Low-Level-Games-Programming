@@ -34,6 +34,11 @@ Sphere SphScene::getSphere(int num) const
 	return (*spheres)[num];
 }
 
+bool SphScene::DoesSphereIntersect(int sphereNum, const Vec3f & rayorig, const Vec3f & raydir, float & t0, float & t1) const
+{
+	return spheres->at(sphereNum).intersect(rayorig,raydir,t0,t1);
+}
+
 Sphere* SphScene::getSphereRef(int num){
 	return &spheres->at(num);
 }
