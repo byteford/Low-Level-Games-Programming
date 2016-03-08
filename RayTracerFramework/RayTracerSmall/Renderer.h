@@ -17,6 +17,7 @@ public:
 	Renderer();
 	~Renderer();
 	Vec3f* pixel;
+	std::thread readThread;
 	float mix(const float &a, const float &b, const float &mix);
 	//Vec3f trace(
 	//	const Vec3f &rayorig,
@@ -38,11 +39,13 @@ public:
 		int x);
 	//void render(const std::vector<Sphere> &spheres, int iteration, const char* folderName);
 	void render(SphScene scene, int iteration, const char* folderName);
+	void ThreadFile(char* filename, unsigned width, unsigned height, Vec3f* image);
 	void ThreadRend(unsigned width, 
 		unsigned height, 
 		float angle, 
 		float aspectratio, 
 		float invWidth, float invHeight, SphScene& scene, Vec3f* pixel);
+	void JoinReadThread();
 	void ThreadSplitter(unsigned startHeight,
 		unsigned endHeight,
 		unsigned startWidth,

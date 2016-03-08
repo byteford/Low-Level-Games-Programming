@@ -132,7 +132,19 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 
 	std::string tempString = ss.str();
 	char* filename = (char*)tempString.c_str();
+	readThread = std::thread(&Renderer::ThreadFile, this, filename, width, height, image);
 
+	/*std::ofstream ofs(filename, std::ios::out | std::ios::binary);
+	ofs << "P6\n" << width << " " << height << "\n255\n";
+	for (unsigned i = 0; i < width * height; ++i) {
+		ofs << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
+			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
+			(unsigned char)(std::min(float(1), image[i].z) * 255);
+	}
+	ofs.close();
+	delete[] image;*/
+}
+void Renderer::ThreadFile(char* filename, unsigned width, unsigned height, Vec3f* image){
 	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 	ofs << "P6\n" << width << " " << height << "\n255\n";
 	for (unsigned i = 0; i < width * height; ++i) {
@@ -159,7 +171,17 @@ void Renderer::ThreadRend(unsigned width, unsigned height, float angle, float as
 	for (int i = 0; i < (5*5); ++i){
 		threadPool[i].join();
 	}
+	std::cout << "render Done" << "\n";
+	JoinReadThread();
+}
+void Renderer::JoinReadThread(){
+	try{
+		readThread.join();
+		std::cout << "file save done" << "\n";
+	}
+	catch (std::exception) {
 
+	}
 }
 void Renderer::ThreadSplitter(unsigned startHeight, unsigned height, unsigned startWidth, unsigned width, unsigned Totalwidth, SphScene& scene, float invWidth, float invHeight, float angle, float aspectratio){
 	for (unsigned y = startHeight; y < height; ++y) {

@@ -83,6 +83,7 @@ void SetThingsUp(int argc, char **argv) {
 }
 void PostStuff() {
 	start = std::chrono::system_clock::now();
+	rend.JoinReadThread();
 #ifdef _DEBUG
 	std::stringstream ffmp;
 	ffmp << "ffmpeg -f image2 -r " << frameRate << " -i " << folder.str() << "\\spheres%d.ppm -b 600k " << folder.str() << "\\out.mp4";
@@ -106,6 +107,10 @@ void PostStuff() {
 	std::cout << "**********************" << std::endl;
 	std::cout << "Total Render Time: " << total_elapsed_time.count() << std::endl;
 	std::cout << "**********************" << std::endl;
+
+	std::stringstream moveFile;
+	moveFile << "copy " << "ouput.log " << folder.str();
+	system(moveFile.str().c_str());
 }
 void UpdateLoop() {
 	for (int r = 0; r <= frames; r++)

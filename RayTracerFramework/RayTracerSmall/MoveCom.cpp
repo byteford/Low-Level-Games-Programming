@@ -1,7 +1,7 @@
 #include "MoveCom.h"
 
 
-MoveCom::MoveCom(int startFrame, int endFrame, int sphere, int x, int y, int z)
+MoveCom::MoveCom(int startFrame, int endFrame, int sphere, float x, float y, float z)
 {
 	this->startFrame = startFrame;
 	this->endFrame = endFrame;

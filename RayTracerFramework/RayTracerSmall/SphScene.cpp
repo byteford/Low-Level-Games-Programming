@@ -148,7 +148,8 @@ void SphScene::AddSphere(std::string str){
 
 void SphScene::LoadMove(std::string str)
 {
-	int startFrame, endFrame, sphere, x, y, z;
+	int startFrame, endFrame, sphere;
+	float x, y, z;
 	std::string info;
 	std::size_t StartLoc;
 	std::size_t endLoc;
