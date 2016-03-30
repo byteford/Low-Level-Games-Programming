@@ -34,14 +34,14 @@
 #include "Sphere.h"
 #include "definitions.h"
 #include "Renderer.h"
-
+#include "Logger.h"
 #include <chrono>
 #include <time.h>
 
 SphScene sce;
 Renderer rend;
 
-std::stringstream folder;
+std::stringstream* folder;
 
 std::chrono::time_point<std::chrono::system_clock> start;
 std::chrono::time_point<std::chrono::system_clock> end;
@@ -52,18 +52,29 @@ int frameRate;
 int seconds;
 void SetThingsUp(int argc, char **argv) {
 
+	time_t timenow;
+	time(&timenow);
+	folder = new std::stringstream();
+	folder->str("");
+	*folder << "SceneOut\\" << timenow;
+	Logger::SetFolder(folder->str());
+
 	std::stringstream cons;
 	for (int i = 0; i < argc;i++)
 	{
-
+		
 		cons.str(argv[i]);
 		if (cons.str() == "-fr") {
 			frameRate = std::atoi(argv[i + 1]);
-			std::cout << frameRate << "\n";
+			//std::cout << frameRate << "\n";
+			Logger::output(std::to_string(frameRate)); 
+			Logger::output("\n");
 		}
 		else if (cons.str() == "-s") {
 			seconds = std::atoi(argv[i + 1]);
-			std::cout << seconds << "\n";
+			//std::cout << seconds << "\n";
+			Logger::output(std::to_string(seconds));
+			Logger::output("\n");
 		}
 	}
 	frames = frameRate * seconds;
@@ -73,26 +84,27 @@ void SetThingsUp(int argc, char **argv) {
 
 	
 	//time_t now = time(0);
-	folder << "SceneOut\\" << time(0);
+	
 
 	std::stringstream ss;
 
-	ss << "mkdir " << folder.str();
+	ss << "mkdir " << folder->str();
 	system(ss.str().c_str());
 
 }
 void PostStuff() {
 	start = std::chrono::system_clock::now();
 	rend.JoinReadThread();
+	std::string vidFilename = "\\out.mp4";
 #ifdef _DEBUG
 	std::stringstream ffmp;
-	ffmp << "ffmpeg -f image2 -r " << frameRate << " -i " << folder.str() << "\\spheres%d.ppm -b 600k " << folder.str() << "\\out.mp4";
+	ffmp << "ffmpeg -f image2 -r " << frameRate << " -i " << folder->str() << "\\spheres%d.ppm -b 600k " << folder->str() << vidFilename;
 	//ffmp << "ffmpeg";
 	std::cout << ffmp.str();
 	system(ffmp.str().c_str());
 #else
 	std::stringstream ffmp;
-	ffmp << "ffmpeg -f image2 -r " << frameRate << " -i " << folder.str() << "\\spheres%d.ppm -b 600k " << folder.str() << "\\out.mp4";
+	ffmp << "ffmpeg -f image2 -r " << frameRate << " -i " << folder->str() << "\\spheres%d.ppm -b 600k " << folder->str() << vidFilename;
 	//ffmp << "ffmpeg";
 	std::cout << ffmp.str();
 	system(ffmp.str().c_str());
@@ -100,29 +112,35 @@ void PostStuff() {
 	end = std::chrono::system_clock::now();
 	std::chrono::duration<double> elapsed_time = end - start;
 	total_elapsed_time += elapsed_time;
-	//std::time_t end_time = std::chrono::system_clock::to_time_t(end);
-	std::cout << "**********************" << std::endl;
-	std::cout << "Finished video render in " << elapsed_time.count() << std::endl;
-	std::cout << "**********************" << std::endl;
-	std::cout << "**********************" << std::endl;
-	std::cout << "Total Render Time: " << total_elapsed_time.count() << std::endl;
-	std::cout << "**********************" << std::endl;
 
-	std::stringstream moveFile;
-	moveFile << "copy " << "ouput.log " << folder.str();
-	system(moveFile.str().c_str());
+	std::stringstream* stream = new std::stringstream();
+
+
+	*stream << "**********************" << std::endl;
+	*stream << "Finished video render in " << elapsed_time.count() << std::endl;
+	*stream << "**********************" << std::endl;
+	*stream << "**********************" << std::endl;
+	*stream << "Total Render Time: " << total_elapsed_time.count() << std::endl;
+	*stream << "**********************" << std::endl;
+	Logger::output(stream);
+	std::stringstream temp;
+	temp << folder->str() << vidFilename;
+	system(temp.str().c_str());
 }
 void UpdateLoop() {
 	for (int r = 0; r <= frames; r++)
 	{
 		sce.Update(r);
-		std::cout << "Start Render \n";
+		//std::cout << "Start Render \n";
+		Logger::output("Start Render \n");
 		start = std::chrono::system_clock::now();
-		rend.render(sce, r, folder.str().c_str());
+		rend.render(sce, r, folder->str().c_str());
 		end = std::chrono::system_clock::now();
 		std::chrono::duration<double> elapsed_time = end - start;
 		total_elapsed_time += elapsed_time;
-		std::cout << "Finished image "<< r <<" render in " << elapsed_time.count()<< std::endl;
+		std::stringstream* stream = new std::stringstream();
+		*stream << "Finished image "<< r <<" render in " << elapsed_time.count()<< std::endl;
+		Logger::output(stream);
 		//std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
 	}
 }

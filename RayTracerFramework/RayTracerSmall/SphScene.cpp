@@ -26,7 +26,8 @@ void SphScene::AddSphere(const Vec3f & c, const float & r, const Vec3f & sc, con
 {
 	Sphere temp(c, r, sc, refl, transp, ec);
 	spheres->push_back(temp);
-	std::cout << temp.ToString();
+	//std::cout << temp.ToString();
+	Logger::output(temp.ToString());
 }
 
 Sphere SphScene::getSphere(int num) const
@@ -62,15 +63,19 @@ void SphScene::LoadSpheresFromFile(){
 				LoadMove(in);
 			}
 			else{
-				std::cout << in << "\n";
-
+				//std::cout << in << "\n";
+				Logger::output(in);
+				Logger::output("\n");
 			}
 		}
 
 	}
 }
 void SphScene::AddSphere(std::string str){
-	std::cout << "init sphere " << str << "\n";
+	//std::cout << "init sphere " << str << "\n";
+	Logger::output("init sphere");
+	Logger::output(str);
+	Logger::output("\n");
 	std::string info;
 	Vec3f pos;
 	float rad;
@@ -143,7 +148,6 @@ void SphScene::AddSphere(std::string str){
 		emission.z = std::atoi(info.c_str());
 	}
 	AddSphere(pos, rad, surfaceCol, reflect, trans, emission);
-	std::cout << emission << "\n";
 }
 
 void SphScene::LoadMove(std::string str)
@@ -184,5 +188,7 @@ void SphScene::LoadMove(std::string str)
 	info = str.substr(StartLoc + 1, (endLoc - 1));
 	z = std::stof(info.c_str());
 	moves->push_back(MoveCom(startFrame, endFrame, sphere, x, y, z));
-	std::cout << startFrame << endFrame << sphere << x << y << z << "\n";
+	std::stringstream* stream = new std::stringstream();
+	*stream << startFrame << endFrame << sphere << x << y << z << "\n";
+	Logger::output(stream);
 }

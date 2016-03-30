@@ -1,5 +1,5 @@
 #include "Renderer.h"
-
+#include "Logger.h"
 
 
 Renderer::Renderer()
@@ -35,7 +35,7 @@ Vec3f Renderer::trace(const Vec3f & rayorig, const Vec3f & raydir,SphScene scene
 		}
 	}
 	// if there's no intersection return black or background color
-	if (!sphere) return Vec3f(2);
+	if (!sphere) return Vec3f(0,1.74,2);
 	Vec3f surfaceColor = 0; // color of the ray/surfaceof the object intersected by the ray
 	Vec3f phit = rayorig + raydir * tnear; // point of intersection
 	Vec3f test = sphere->getCenter();
@@ -132,8 +132,11 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 
 	std::string tempString = ss.str();
 	char* filename = (char*)tempString.c_str();
-	readThread = std::thread(&Renderer::ThreadFile, this, filename, width, height, image);
-
+#ifdef _NONTHREAD
+	ThreadFile(filename,width,height,image);
+#else
+	readThread = std::thread(&Renderer::ThreadFile, this, tempString, width, height, image);
+#endif
 	/*std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 	ofs << "P6\n" << width << " " << height << "\n255\n";
 	for (unsigned i = 0; i < width * height; ++i) {
@@ -144,8 +147,9 @@ void Renderer::render(SphScene scene, int iteration, const char * folderName)
 	ofs.close();
 	delete[] image;*/
 }
-void Renderer::ThreadFile(char* filename, unsigned width, unsigned height, Vec3f* image){
-	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
+void Renderer::ThreadFile(std::string fileString, unsigned width, unsigned height, Vec3f* image){
+	char* filename2 = (char*)fileString.c_str();
+	std::ofstream ofs(filename2, std::ios::out | std::ios::binary);
 	ofs << "P6\n" << width << " " << height << "\n255\n";
 	for (unsigned i = 0; i < width * height; ++i) {
 		ofs << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
@@ -157,9 +161,10 @@ void Renderer::ThreadFile(char* filename, unsigned width, unsigned height, Vec3f
 }
 void Renderer::ThreadRend(unsigned width, unsigned height, float angle, float aspectratio, float invWidth, float invHeight, SphScene& scene, Vec3f* pixel){
 	//run insted of loops to turn off threading
-	//ThreadSplitter(0, height, 0,width, width, scene, invWidth, invHeight, angle, aspectratio);
+#ifdef _NONTHREAD
+	ThreadSplitter(0, height, 0,width, width, scene, invWidth, invHeight, angle, aspectratio);
 
-	
+#else	
 	int hightPer = height/5, widthPer = width/5;
 	std::thread threadPool[5*5];
 	for (int i = 0; i < 5; ++i){
@@ -171,13 +176,16 @@ void Renderer::ThreadRend(unsigned width, unsigned height, float angle, float as
 	for (int i = 0; i < (5*5); ++i){
 		threadPool[i].join();
 	}
-	std::cout << "render Done" << "\n";
+	//std::cout << "render Done" << "\n";
+	Logger::output("render Done \n");
 	JoinReadThread();
+#endif
 }
 void Renderer::JoinReadThread(){
 	try{
 		readThread.join();
-		std::cout << "file save done" << "\n";
+		//std::cout << "file save done" << "\n";
+		Logger::output("file save done \n");
 	}
 	catch (std::exception) {
 

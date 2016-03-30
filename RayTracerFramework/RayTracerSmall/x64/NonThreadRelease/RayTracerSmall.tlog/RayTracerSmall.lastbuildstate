@@ -1,0 +1,2 @@
+#TargetFrameworkVersion=v4.0:PlatformToolSet=v120:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit
+NonThreadRelease|x64|E:\uni work\low level graphics\program\RayTracerFramework\|

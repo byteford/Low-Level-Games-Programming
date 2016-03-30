@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include "MoveCom.h"
+#include "Logger.h"
 class SphScene
 {
 private:

@@ -39,7 +39,7 @@ public:
 		int x);
 	//void render(const std::vector<Sphere> &spheres, int iteration, const char* folderName);
 	void render(SphScene scene, int iteration, const char* folderName);
-	void ThreadFile(char* filename, unsigned width, unsigned height, Vec3f* image);
+	void ThreadFile(std::string filename, unsigned width, unsigned height, Vec3f* image);
 	void ThreadRend(unsigned width, 
 		unsigned height, 
 		float angle, 
