@@ -11,6 +11,8 @@ class SphScene
 {
 private:
 	std::vector<Sphere>* spheres;
+	Sphere* SpheresArr;
+	int ArrSize;
 	std::vector<MoveCom>* moves;
 public:
 	SphScene();
