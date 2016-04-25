@@ -19,6 +19,7 @@ Renderer::Renderer()
 Renderer::~Renderer()
 {
 }
+
 float Renderer::mix(const float &a, const float &b, const float &mix)
 {
 	return b * mix + a * (1 - mix);
@@ -28,20 +29,20 @@ float Renderer::mix(const float &a, const float &b, const float &mix)
 Vec3f Renderer::trace(
 	const Vec3f &rayorig,
 	const Vec3f &raydir,
-	const std::vector<Sphere> &spheres,
+	SphScene scene,
 	const int &depth)
 {
 	//if (raydir.length() != 1) std::cerr << "Error " << raydir << std::endl;
 	float tnear = INFINITY;
 	const Sphere* sphere = NULL;
 	// find intersection of this ray with the sphere in the scene
-	for (unsigned i = 0; i < spheres.size(); ++i) {
+	for (unsigned i = 0; i < scene.GetSize(); ++i) {
 		float t0 = INFINITY, t1 = INFINITY;
-		if (spheres[i].intersect(rayorig, raydir, t0, t1)) {
+		if (scene.DoesSphereIntersect(i, rayorig, raydir, t0, t1)) {
 			if (t0 < 0) t0 = t1;
 			if (t0 < tnear) {
 				tnear = t0;
-				sphere = &spheres[i];
+				sphere = scene.getSphereRef(i);
 			}
 		}
 	}
@@ -66,7 +67,7 @@ Vec3f Renderer::trace(
 		// are already normalized)
 		Vec3f refldir = raydir - nhit * 2 * raydir.dot(nhit);
 		refldir.normalize();
-		Vec3f reflection = trace(phit + nhit * bias, refldir, spheres, depth + 1);
+		Vec3f reflection = trace(phit + nhit * bias, refldir, scene, depth + 1);
 		Vec3f refraction = 0;
 		// if the sphere is also transparent compute refraction ray (transmission)
 		if (sphere->transparency) {
@@ -75,7 +76,7 @@ Vec3f Renderer::trace(
 			float k = 1 - eta * eta * (1 - cosi * cosi);
 			Vec3f refrdir = raydir * eta + nhit * (eta *  cosi - sqrt(k));
 			refrdir.normalize();
-			refraction = trace(phit - nhit * bias, refrdir, spheres, depth + 1);
+			refraction = trace(phit - nhit * bias, refrdir, scene, depth + 1);
 		}
 		// the result is a mix of reflection and refraction (if the sphere is transparent)
 		surfaceColor = (
@@ -84,23 +85,23 @@ Vec3f Renderer::trace(
 	}
 	else {
 		// it's a diffuse object, no need to raytrace any further
-		for (unsigned i = 0; i < spheres.size(); ++i) {
-			if (spheres[i].emissionColor.x > 0) {
+		for (unsigned i = 0; i < scene.GetSize(); ++i) {
+			if (scene.getSphere(i).emissionColor.x > 0) {
 				// this is a light
 				Vec3f transmission = 1;
-				Vec3f lightDirection = spheres[i].center - phit;
+				Vec3f lightDirection = scene.getSphere(i).center - phit;
 				lightDirection.normalize();
-				for (unsigned j = 0; j < spheres.size(); ++j) {
+				for (unsigned j = 0; j < scene.GetSize(); ++j) {
 					if (i != j) {
 						float t0, t1;
-						if (spheres[j].intersect(phit + nhit * bias, lightDirection, t0, t1)) {
+						if (scene.getSphere(j).intersect(phit + nhit * bias, lightDirection, t0, t1)) {
 							transmission = 0;
 							break;
 						}
 					}
 				}
 				surfaceColor += sphere->surfaceColor * transmission *
-					std::max(float(0), nhit.dot(lightDirection)) * spheres[i].emissionColor;
+					std::max(float(0), nhit.dot(lightDirection)) * scene.getSphere(i).emissionColor;
 			}
 		}
 	}
@@ -109,7 +110,7 @@ Vec3f Renderer::trace(
 }
 
 
-void Renderer::render(const std::vector<Sphere> &spheres, int iteration, int threadNumber)
+void Renderer::render(SphScene scene, int iteration, const char* folderName)
 {
 
 	//auto start = std::chrono::system_clock::now();
@@ -146,7 +147,7 @@ void Renderer::render(const std::vector<Sphere> &spheres, int iteration, int thr
 			float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
 			Vec3f raydir(xx, yy, -1);
 			raydir.normalize();
-			*pixel = trace(Vec3f(0), raydir, spheres, 0);
+			*pixel = trace(Vec3f(0), raydir, scene, 0);
 		}
 	}
 	// Save result to a PPM image (keep these flags if you compile under Windows)

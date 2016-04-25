@@ -23,21 +23,24 @@
 #include <thread>
 
 #include "allocator.h"
-
+#include "SphScene.h"
 #include "Vec3.h"
 #include "Sphere.h"
 #include "definitions.h"
 #include "Renderer.h"
+#include "Logger.h"
+#include <fios2.h>
 //static const size_t kOnionMemorySize = 64 * 1024 * 1024;
+using namespace sce;
+using namespace sce::Gnmx;
+
+SphScene scene;
+Renderer rend;
 
 std::chrono::time_point<std::chrono::system_clock> start;
 std::chrono::time_point<std::chrono::system_clock> end;
 std::chrono::duration<double> total_elapsed_time;
 
-static const int num_threads = 10;
-
-using namespace sce;
-using namespace sce::Gnmx;
 
 std::stringstream* folder;
 
@@ -49,8 +52,8 @@ void SetThingsUp(int argc, char **argv){
 	time(&timenow);
 	folder = new std::stringstream();
 	folder->str("");
-	*folder << "SceneOut\\";
-
+	*folder << "SceneOut\\" << timenow;
+	Logger::SetFolder(folder->str());
 	std::stringstream cons;
 	for (int i = 0; i < argc; i++)
 	{
@@ -58,14 +61,22 @@ void SetThingsUp(int argc, char **argv){
 		cons.str(argv[i]);
 		if (cons.str() == "-fr") {
 			frameRate = std::atoi(argv[i + 1]);
+			Logger::output(std::to_string(frameRate));
+			Logger::output("\n");
 		}
 		else if (cons.str() == "-s") {
 			seconds = std::atoi(argv[i + 1]);
+			Logger::output(std::to_string(seconds));
+			Logger::output("\n");
 		}
 	}
 	frames = frameRate * seconds;
-	std::cout << "Seconds: " << seconds << " FrameRate: " << frameRate << "frames: " << frames;
+	//std::cout << "Seconds: " << seconds << " FrameRate: " << frameRate << "frames: " << frames;
+	scene.LoadSpheresFromFile();
+
+	sceFiosDirectoryCreate(NULL, folder->str().c_str());
 	
+
 }
 
 void PostStuff(){
@@ -87,9 +98,25 @@ void PostStuff(){
 	*stream << "**********************" << std::endl;*/
 }
 
+void UpdateLoop() {
+	for (int r = 0; r <= frames; r++)
+	{
+		scene.Update(r);
+		//std::cout << "Start Render \n";
+		Logger::output("Start Render \n");
+		start = std::chrono::system_clock::now();
+		rend.render(scene, r, folder->str().c_str());
+		end = std::chrono::system_clock::now();
+		//std::chrono::duration<double> elapsed_time = end - start;
+		//total_elapsed_time += elapsed_time;
+		//std::stringstream* stream = new std::stringstream();
+		//*stream << "Finished image " << r << " render in " << elapsed_time.count() << std::endl;
+		//Logger::output(stream);
+		//std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
+	}
+}
 
-
-void BasicRender(int iteration, Renderer rend)
+/*void BasicRender(int iteration, Renderer rend)
 {
 	std::vector<Sphere> spheres;
 
@@ -100,19 +127,20 @@ void BasicRender(int iteration, Renderer rend)
 	rend.render(spheres, iteration, 1);
 
 	spheres.clear();
-}
+}*/
 int main(int argc, char **argv)
 {
-	SetThingsUp(argc, argv);
+	
 	frameRate = 10;
 	seconds = 10;
-	Renderer rend;
-	for (int i = 0; i < 10; i++)
+	SetThingsUp(argc, argv);
+	/*for (int i = 0; i < 10; i++)
 	{
-		BasicRender(i, rend);
+		//BasicRender(i, rend);
 		std::cout << i << " done" <<std::endl;
 		std::cout.flush();
-	}
+	}*/
+	UpdateLoop();
 	PostStuff();
 	return 0;
 }

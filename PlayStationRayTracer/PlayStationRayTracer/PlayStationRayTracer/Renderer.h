@@ -11,6 +11,7 @@
 #include <libsysmodule.h>
 #include<assert.h>
 #include <string>
+#include "SphScene.h"
 class Renderer
 {
 private:
@@ -26,8 +27,8 @@ public:
 	Vec3f trace(
 		const Vec3f &rayorig,
 		const Vec3f &raydir,
-		const std::vector<Sphere> &spheres,
+		SphScene scene,
 		const int &depth);
-	void render(const std::vector<Sphere> &spheres, int iteration, int threadNumber);
+	void render(SphScene scene, int iteration, const char* folderName);
 };
 
