@@ -4,14 +4,21 @@
 #include "Sphere.h"
 #include "definitions.h"
 #include "allocator.h"
+#include <sstream>
 #include <fstream>
 #include <sce_fiber.h>
+#include <fios2.h>
 #include <libsysmodule.h>
 #include<assert.h>
+#include <string>
 class Renderer
 {
 private:
 	static const size_t kOnionMemorySize = 64 * 1024 * 1024;
+	SceFiosOp op[3];
+	SceFiosOpenParams openParams;
+	SceFiosFH writeFH;
+	SceFiosSize result;
 public:
 	Renderer();
 	~Renderer();

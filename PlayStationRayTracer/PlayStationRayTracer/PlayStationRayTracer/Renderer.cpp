@@ -7,6 +7,12 @@ Renderer::Renderer()
 
 	ret = sceSysmoduleLoadModule(SCE_SYSMODULE_FIBER);
 	assert(ret == SCE_OK);
+
+	op[0] = 0; op[1] = 0; op[2] = 0;
+	writeFH = 0;
+	openParams = SCE_FIOS_OPENPARAMS_INITIALIZER;
+	openParams.openFlags = SCE_FIOS_O_WRONLY | SCE_FIOS_O_CREAT | SCE_FIOS_O_TRUNC;
+
 }
 
 
@@ -149,13 +155,38 @@ void Renderer::render(const std::vector<Sphere> &spheres, int iteration, int thr
 	std::string tempString = ss.str();
 	char* filename = (char*)tempString.c_str();
 
-	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
+	/*std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 	ofs << "P6\n" << width << " " << height << "\n255\n";
 	for (unsigned i = 0; i < width * height; ++i) {
 		ofs << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].z) * 255);
 	}
-	ofs.close();
+	ofs.close();*/
+
+
+
+	std::stringstream output;
+	output << "P6\n" << width << " " << height << "\n255\n";
+	for (unsigned i = 0; i < width * height; ++i) {
+		output << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
+			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
+			(unsigned char)(std::min(float(1), image[i].z) * 255);
+	};
+	SceFiosSize outputSize = (SceFiosSize)(strlen(output.str().c_str()) + 1);
+
+	op[0] = sceFiosFHOpen(NULL, &writeFH, filename, &openParams);
+	assert(op[0] != SCE_FIOS_OP_INVALID);
+	op[1] = sceFiosFHWrite(NULL, writeFH, output.str().c_str(), outputSize);
+	assert(op[1] != SCE_FIOS_OP_INVALID);
+	op[2] = sceFiosFHClose(NULL, writeFH);
+
+
+	result = sceFiosOpSyncWait(op[0]);
+	assert(result == SCE_FIOS_OK);
+	result = sceFiosOpSyncWait(op[1]);
+	assert(result == SCE_FIOS_OK);
+	result = sceFiosOpSyncWait(op[2]);
+	assert(result == SCE_FIOS_OK);
 	//delete[] image;
 }
