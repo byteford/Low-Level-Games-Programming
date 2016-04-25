@@ -29,5 +29,5 @@ Sphere* SphScene::getSphereRef(int num){
 	return &spheres->at(num);
 }
 int SphScene::GetSize() const{
-	spheres->size;
+	spheres->size();
 }

@@ -5,6 +5,9 @@
 #include "definitions.h"
 #include "allocator.h"
 #include <fstream>
+#include <sce_fiber.h>
+#include <libsysmodule.h>
+#include<assert.h>
 class Renderer
 {
 private:

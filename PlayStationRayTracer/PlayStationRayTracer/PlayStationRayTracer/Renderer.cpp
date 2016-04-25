@@ -3,6 +3,10 @@
 
 Renderer::Renderer()
 {
+	int ret = SCE_OK;
+
+	ret = sceSysmoduleLoadModule(SCE_SYSMODULE_FIBER);
+	assert(ret == SCE_OK);
 }
 
 

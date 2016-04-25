@@ -1,7 +1,6 @@
 #include "Renderer.h"
 #include "Logger.h"
 
-
 Renderer::Renderer()
 {
 }
@@ -165,15 +164,18 @@ void Renderer::ThreadRend(unsigned width, unsigned height, float angle, float as
 	ThreadSplitter(0, height, 0,width, width, scene, invWidth, invHeight, angle, aspectratio);
 
 #else	
-	int hightPer = height/5, widthPer = width/5;
-	std::thread threadPool[5*5];
-	for (int i = 0; i < 5; ++i){
-		for (int j = 0; j < 5; ++j){
-			threadPool[(i*5)+j] = std::thread(&Renderer::ThreadSplitter, this, i*hightPer, (i + 1)*hightPer, j*widthPer, (j + 1)*widthPer, width, scene, invWidth, invHeight, angle, aspectratio);
+	const int HeightThreads = 2;
+	const int widthThreads = 2;
+	const int threadsUsed = HeightThreads *widthThreads;
+	int hightPer = height/ HeightThreads, widthPer = width/ widthThreads;
+	std::thread threadPool[threadsUsed];
+	for (int i = 0; i < HeightThreads; ++i){
+		for (int j = 0; j < widthThreads; ++j){
+			threadPool[(i*widthThreads)+j] = std::thread(&Renderer::ThreadSplitter, this, i*hightPer, (i + 1)*hightPer, j*widthPer, (j + 1)*widthPer, width, scene, invWidth, invHeight, angle, aspectratio);
 			
 		}
 	}
-	for (int i = 0; i < (5*5); ++i){
+	for (int i = 0; i < (threadsUsed); ++i){
 		threadPool[i].join();
 	}
 	//std::cout << "render Done" << "\n";

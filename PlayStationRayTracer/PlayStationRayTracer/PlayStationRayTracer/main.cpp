@@ -39,6 +39,53 @@ static const int num_threads = 10;
 using namespace sce;
 using namespace sce::Gnmx;
 
+std::stringstream* folder;
+
+
+int frames, frameRate, seconds;
+
+void SetThingsUp(int argc, char **argv){
+	time_t timenow;
+	time(&timenow);
+	folder = new std::stringstream();
+	folder->str("");
+	*folder << "SceneOut\\";
+
+	std::stringstream cons;
+	for (int i = 0; i < argc; i++)
+	{
+
+		cons.str(argv[i]);
+		if (cons.str() == "-fr") {
+			frameRate = std::atoi(argv[i + 1]);
+		}
+		else if (cons.str() == "-s") {
+			seconds = std::atoi(argv[i + 1]);
+		}
+	}
+	frames = frameRate * seconds;
+	std::cout << "Seconds: " << seconds << " FrameRate: " << frameRate << "frames: " << frames;
+	
+}
+
+void PostStuff(){
+	/*start = std::chrono::system_clock::now();
+
+
+	end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_time = end - start;
+	total_elapsed_time += elapsed_time;
+
+	std::stringstream* stream = new std::stringstream();
+
+
+	*stream << "**********************" << std::endl;
+	*stream << "Finished video render in " << elapsed_time.count() << std::endl;
+	*stream << "**********************" << std::endl;
+	*stream << "**********************" << std::endl;
+	*stream << "Total Render Time: " << total_elapsed_time.count() << std::endl;
+	*stream << "**********************" << std::endl;*/
+}
 
 
 
@@ -56,6 +103,9 @@ void BasicRender(int iteration, Renderer rend)
 }
 int main(int argc, char **argv)
 {
+	SetThingsUp(argc, argv);
+	frameRate = 10;
+	seconds = 10;
 	Renderer rend;
 	for (int i = 0; i < 10; i++)
 	{
@@ -63,6 +113,6 @@ int main(int argc, char **argv)
 		std::cout << i << " done" <<std::endl;
 		std::cout.flush();
 	}
-	
+	PostStuff();
 	return 0;
 }

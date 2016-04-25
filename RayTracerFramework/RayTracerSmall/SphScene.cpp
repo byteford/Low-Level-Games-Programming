@@ -34,25 +34,25 @@ void SphScene::AddSphere(const Vec3f & c, const float & r, const Vec3f & sc, con
 
 Sphere SphScene::getSphere(int num) const
 {
-	// return (*spheres)[num];
-	return SpheresArr[num];
+	 return (*spheres)[num];
+	//return SpheresArr[num];
 }
 
 bool SphScene::DoesSphereIntersect(int sphereNum, const Vec3f & rayorig, const Vec3f & raydir, float & t0, float & t1) const
 {
-	//return spheres->at(sphereNum).intersect(rayorig,raydir,t0,t1);
-	return SpheresArr[sphereNum].intersect(rayorig, raydir, t0, t1);
+	return spheres->at(sphereNum).intersect(rayorig,raydir,t0,t1);
+	//return SpheresArr[sphereNum].intersect(rayorig, raydir, t0, t1);
 }
 
 Sphere* SphScene::getSphereRef(int num){
-	//return &spheres->at(num);
-	return &SpheresArr[num];
+	return &spheres->at(num);
+	//return &SpheresArr[num];
 }
 
 int SphScene::GetSize() const
 {
-	//return spheres->size();
-	return ArrSize;
+	return spheres->size();
+	//return ArrSize;
 }
 void SphScene::LoadSpheresFromFile(){
 	std::stringstream fileLoc;
