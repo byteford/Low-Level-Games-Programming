@@ -13,11 +13,14 @@
 #include <future>
 class Renderer
 {
+private:
+	Vec3f* pixel;
+	std::thread readThread;
+
 public:
 	Renderer();
 	~Renderer();
-	Vec3f* pixel;
-	std::thread readThread;
+
 	float mix(const float &a, const float &b, const float &mix);
 	//Vec3f trace(
 	//	const Vec3f &rayorig,

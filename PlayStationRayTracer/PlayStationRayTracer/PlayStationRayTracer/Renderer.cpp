@@ -117,7 +117,7 @@ void Renderer::render(SphScene scene, int iteration, const char* folderName)
 
 	// Initialize the WB_ONION memory allocator
 
-	LinearAllocator onionAllocator;
+	
 	int ret = onionAllocator.initialize(
 		kOnionMemorySize, SCE_KERNEL_WB_ONION,
 		SCE_KERNEL_PROT_CPU_RW | SCE_KERNEL_PROT_GPU_ALL);
@@ -132,10 +132,10 @@ void Renderer::render(SphScene scene, int iteration, const char* folderName)
 	
 	size_t totalSize = sizeof(Vec3f)* width * height;
 
-	void * buffer = onionAllocator.allocate(totalSize, sce::Gnm::kAlignmentOfBufferInBytes);
+	buffer = onionAllocator.allocate(totalSize, sce::Gnm::kAlignmentOfBufferInBytes);
 
-	Vec3f *image = reinterpret_cast<Vec3f *>(buffer);
-	Vec3f *pixel = image;
+	image = reinterpret_cast<Vec3f *>(buffer);
+	pixel = image;
 
 	float invWidth = 1 / float(width), invHeight = 1 / float(height);
 	float fov = 30, aspectratio = width / float(height);
@@ -165,21 +165,31 @@ void Renderer::render(SphScene scene, int iteration, const char* folderName)
 	}
 	ofs.close();*/
 
+	unsigned char x, y, z;
+	//output.clear();
+	
 
+	op[0] = sceFiosFHOpenSync(NULL, &writeFH, filename, &openParams);
+	assert(op[0] != SCE_FIOS_OP_INVALID);
 
 	std::stringstream output;
 	output << "P6\n" << width << " " << height << "\n255\n";
-	for (unsigned i = 0; i < width * height; ++i) {
-		output << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
-			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
-			(unsigned char)(std::min(float(1), image[i].z) * 255);
-	};
 	SceFiosSize outputSize = (SceFiosSize)(strlen(output.str().c_str()) + 1);
-
-	op[0] = sceFiosFHOpen(NULL, &writeFH, filename, &openParams);
-	assert(op[0] != SCE_FIOS_OP_INVALID);
 	op[1] = sceFiosFHWrite(NULL, writeFH, output.str().c_str(), outputSize);
 	assert(op[1] != SCE_FIOS_OP_INVALID);
+
+	for (unsigned i = 0; i < width * height; ++i) {
+		output.clear();
+		output << (unsigned char)(std::min(float(1), image[i].x) * 255)
+		<<
+		(unsigned char)(std::min(float(1), image[i].y) * 255)
+		<<
+		(unsigned char)(std::min(float(1), image[i].z) * 255);
+	};
+	
+
+
+	
 	op[2] = sceFiosFHClose(NULL, writeFH);
 
 

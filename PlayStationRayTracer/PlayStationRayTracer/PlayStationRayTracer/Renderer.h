@@ -12,6 +12,7 @@
 #include<assert.h>
 #include <string>
 #include "SphScene.h"
+#include <thread>
 class Renderer
 {
 private:
@@ -20,6 +21,16 @@ private:
 	SceFiosOpenParams openParams;
 	SceFiosFH writeFH;
 	SceFiosSize result;
+
+	Vec3f* pixel;
+	std::thread readThread;
+
+	void * buffer;
+	Vec3f *image;
+	//Vec3f *pixel;
+	LinearAllocator onionAllocator;
+
+	
 public:
 	Renderer();
 	~Renderer();

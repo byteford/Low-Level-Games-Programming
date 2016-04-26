@@ -30,12 +30,13 @@
 #include "Renderer.h"
 #include "Logger.h"
 #include <fios2.h>
+#include<assert.h>
 //static const size_t kOnionMemorySize = 64 * 1024 * 1024;
 using namespace sce;
 using namespace sce::Gnmx;
 
 SphScene scene;
-Renderer rend;
+
 
 std::chrono::time_point<std::chrono::system_clock> start;
 std::chrono::time_point<std::chrono::system_clock> end;
@@ -52,7 +53,7 @@ void SetThingsUp(int argc, char **argv){
 	time(&timenow);
 	folder = new std::stringstream();
 	folder->str("");
-	*folder << "SceneOut\\" << timenow;
+	*folder << "/app0/SceneOut/" << timenow;
 	Logger::SetFolder(folder->str());
 	std::stringstream cons;
 	for (int i = 0; i < argc; i++)
@@ -73,10 +74,8 @@ void SetThingsUp(int argc, char **argv){
 	frames = frameRate * seconds;
 	//std::cout << "Seconds: " << seconds << " FrameRate: " << frameRate << "frames: " << frames;
 	scene.LoadSpheresFromFile();
-
-	sceFiosDirectoryCreate(NULL, folder->str().c_str());
-	
-
+	std::string temp = folder->str();
+	sceFiosDirectoryCreateSync(NULL,temp.c_str());
 }
 
 void PostStuff(){
@@ -98,14 +97,17 @@ void PostStuff(){
 	*stream << "**********************" << std::endl;*/
 }
 
-void UpdateLoop() {
+void UpdateLoop(Renderer* rend) {
+	std::stringstream stream;
 	for (int r = 0; r <= frames; r++)
 	{
 		scene.Update(r);
 		//std::cout << "Start Render \n";
-		Logger::output("Start Render \n");
+		stream.str("Start Render ");
+		stream << r << "\n";
+		Logger::output(&stream);
 		start = std::chrono::system_clock::now();
-		rend.render(scene, r, folder->str().c_str());
+		rend->render(scene, r, folder->str().c_str());
 		end = std::chrono::system_clock::now();
 		//std::chrono::duration<double> elapsed_time = end - start;
 		//total_elapsed_time += elapsed_time;
@@ -130,7 +132,7 @@ void UpdateLoop() {
 }*/
 int main(int argc, char **argv)
 {
-	
+	Renderer rend;
 	frameRate = 10;
 	seconds = 10;
 	SetThingsUp(argc, argv);
@@ -140,7 +142,7 @@ int main(int argc, char **argv)
 		std::cout << i << " done" <<std::endl;
 		std::cout.flush();
 	}*/
-	UpdateLoop();
+	UpdateLoop(&rend);
 	PostStuff();
 	return 0;
 }
