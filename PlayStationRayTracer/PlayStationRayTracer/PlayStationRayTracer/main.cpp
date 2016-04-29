@@ -75,7 +75,8 @@ void SetThingsUp(int argc, char **argv){
 	//std::cout << "Seconds: " << seconds << " FrameRate: " << frameRate << "frames: " << frames;
 	scene.LoadSpheresFromFile();
 	std::string temp = folder->str();
-	sceFiosDirectoryCreateSync(NULL,temp.c_str());
+	sceFiosDirectoryCreateSync(NULL, "/app0/SceneOut/");
+	sceFiosDirectoryCreateSync(NULL, temp.c_str());
 }
 
 void PostStuff(){
