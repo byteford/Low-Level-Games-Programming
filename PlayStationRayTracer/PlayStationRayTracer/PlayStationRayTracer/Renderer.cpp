@@ -8,10 +8,7 @@ Renderer::Renderer()
 	ret = sceSysmoduleLoadModule(SCE_SYSMODULE_FIBER);
 	assert(ret == SCE_OK);
 
-	op[0] = 0; op[1] = 0; op[2] = 0;
-	writeFH = 0;
-	openParams = SCE_FIOS_OPENPARAMS_INITIALIZER;
-	openParams.openFlags = SCE_FIOS_O_WRONLY | SCE_FIOS_O_CREAT | SCE_FIOS_O_TRUNC;
+	
 
 }
 
@@ -117,7 +114,12 @@ void Renderer::render(SphScene scene, int iteration, const char* folderName)
 
 	// Initialize the WB_ONION memory allocator
 
-	
+	op[0] = 0; op[1] = 0; op[2] = 0;
+	writeFH = 0;
+	openParams = SCE_FIOS_OPENPARAMS_INITIALIZER;
+	openParams.openFlags = SCE_FIOS_O_WRONLY | SCE_FIOS_O_CREAT | SCE_FIOS_O_TRUNC;
+
+
 	int ret = onionAllocator.initialize(
 		kOnionMemorySize, SCE_KERNEL_WB_ONION,
 		SCE_KERNEL_PROT_CPU_RW | SCE_KERNEL_PROT_GPU_ALL);
@@ -152,39 +154,49 @@ void Renderer::render(SphScene scene, int iteration, const char* folderName)
 	}
 	// Save result to a PPM image (keep these flags if you compile under Windows)
 	std::stringstream ss;
-	ss << "/app0/SceneOut/spheres" << iteration << ".ppm";
+	ss << folderName <<"/spheres" << iteration << ".ppm";
 	std::string tempString = ss.str();
 	char* filename = (char*)tempString.c_str();
 
-	/*std::ofstream ofs(filename, std::ios::out | std::ios::binary);
+	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 	ofs << "P6\n" << width << " " << height << "\n255\n";
 	for (unsigned i = 0; i < width * height; ++i) {
 		ofs << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].z) * 255);
 	}
-	ofs.close();*/
+	ofs.close();
 
 	unsigned char x, y, z;
 	//output.clear();
 	
-
+	/*
 	op[0] = sceFiosFHOpenSync(NULL, &writeFH, filename, &openParams);
-	assert(op[0] != SCE_FIOS_OP_INVALID);
+	//assert(op[0] != SCE_FIOS_OP_INVALID);
 
 	std::stringstream output;
 	output << "P6\n" << width << " " << height << "\n255\n";
 	SceFiosSize outputSize = (SceFiosSize)(strlen(output.str().c_str()) + 1);
-	op[1] = sceFiosFHWrite(NULL, writeFH, output.str().c_str(), outputSize);
-	assert(op[1] != SCE_FIOS_OP_INVALID);
-
+	op[1] = sceFiosFHWriteSync
+		(NULL, writeFH, output.str().c_str(), outputSize);
+	//assert(op[1] != SCE_FIOS_OP_INVALID);
+	result = sceFiosOpSyncWaitForIO(op[1]);
+	assert(result != SCE_FIOS_OK);
 	for (unsigned i = 0; i < width * height; ++i) {
-		output.clear();
+		output.str("");
 		output << (unsigned char)(std::min(float(1), image[i].x) * 255)
 		<<
 		(unsigned char)(std::min(float(1), image[i].y) * 255)
 		<<
 		(unsigned char)(std::min(float(1), image[i].z) * 255);
+
+		outputSize = (SceFiosSize)(strlen(output.str().c_str()) + 1);
+		op[1] = sceFiosFHWriteSync
+			(NULL, writeFH, output.str().c_str(), outputSize);
+		//assert(op[1] != SCE_FIOS_OP_INVALID);
+		result = sceFiosOpSyncWaitForIO(op[1]);
+		assert(result != SCE_FIOS_OK);
+
 	};
 	
 
@@ -194,10 +206,8 @@ void Renderer::render(SphScene scene, int iteration, const char* folderName)
 
 
 	result = sceFiosOpSyncWait(op[0]);
-	assert(result == SCE_FIOS_OK);
-	result = sceFiosOpSyncWait(op[1]);
-	assert(result == SCE_FIOS_OK);
+	assert(result != SCE_FIOS_OK);
 	result = sceFiosOpSyncWait(op[2]);
-	assert(result == SCE_FIOS_OK);
+	assert(result != SCE_FIOS_OK);*/
 	//delete[] image;
 }
