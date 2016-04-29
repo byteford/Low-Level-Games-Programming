@@ -4,6 +4,7 @@
 SphScene::SphScene()
 {
 	spheres = new std::vector<Sphere>();
+	moves = new std::vector<MoveCom>();
 }
 
 
@@ -12,7 +13,11 @@ SphScene::~SphScene()
 }
 void SphScene::Update(int frameNum)
 {
-	
+	//for each (MoveCom move in *moves)
+	//{
+	for (int i = 0; i < (*moves).size(); i++){
+			spheres->at(moves->at(i).GetSphere()).Move(moves->at(i).GetPosAtFrame(frameNum));
+	}
 }
 void SphScene::AddSphere(
 	const Vec3f &c,
@@ -21,7 +26,10 @@ void SphScene::AddSphere(
 	const float &refl,
 	const float &transp,
 	const Vec3f &ec){
-
+	Sphere temp(c, r, sc, refl, transp, ec);
+	spheres->push_back(temp);
+	//std::cout << temp.ToString();
+	Logger::output(temp.ToString());
 }
 Sphere SphScene::getSphere(int num) const{
 	return spheres->at(num);
@@ -37,7 +45,7 @@ int SphScene::GetSize() const{
 }
 void SphScene::LoadSpheresFromFile() {
 	std::stringstream fileLoc;
-	fileLoc << "SceneIn/Scene.txt";
+	fileLoc << "/app0/SceneIn/Scene.txt";
 	std::string in;
 	std::ifstream input(fileLoc.str().c_str(), std::ios::in);
 	if (input.is_open()) {
@@ -174,8 +182,8 @@ void SphScene::LoadMove(std::string str)
 	endLoc = str.find(" ", StartLoc + 1);
 	info = str.substr(StartLoc + 1, (endLoc - 1));
 	z = std::stof(info.c_str());
-	/*moves->push_back(MoveCom(startFrame, endFrame, sphere, x, y, z));
+	moves->push_back(MoveCom(startFrame, endFrame, sphere, x, y, z));
 	std::stringstream* stream = new std::stringstream();
 	*stream << startFrame << endFrame << sphere << x << y << z << "\n";
-	Logger::output(stream);*/
+	Logger::output(stream);
 }

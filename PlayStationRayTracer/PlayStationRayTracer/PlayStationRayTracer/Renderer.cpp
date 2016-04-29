@@ -158,19 +158,19 @@ void Renderer::render(SphScene scene, int iteration, const char* folderName)
 	std::string tempString = ss.str();
 	char* filename = (char*)tempString.c_str();
 
-	/*std::ofstream ofs(filename, std::ios::out | std::ios::binary);
+	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 	ofs << "P6\n" << width << " " << height << "\n255\n";
 	for (unsigned i = 0; i < width * height; ++i) {
 		ofs << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].z) * 255);
 	}
-	ofs.close();*/
+	ofs.close();
 
 	unsigned char x, y, z;
 	//output.clear();
 	
-
+	/*
 	op[0] = sceFiosFHOpenSync(NULL, &writeFH, filename, &openParams);
 	//assert(op[0] != SCE_FIOS_OP_INVALID);
 
@@ -208,6 +208,6 @@ void Renderer::render(SphScene scene, int iteration, const char* folderName)
 	result = sceFiosOpSyncWait(op[0]);
 	assert(result != SCE_FIOS_OK);
 	result = sceFiosOpSyncWait(op[2]);
-	assert(result != SCE_FIOS_OK);
+	assert(result != SCE_FIOS_OK);*/
 	//delete[] image;
 }

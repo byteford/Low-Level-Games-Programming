@@ -54,6 +54,7 @@ void SetThingsUp(int argc, char **argv){
 	folder = new std::stringstream();
 	folder->str("");
 	*folder << "/app0/SceneOut/" << timenow;
+	//*folder << "SceneOut/" << timenow;
 	Logger::SetFolder(folder->str());
 	std::stringstream cons;
 	for (int i = 0; i < argc; i++)

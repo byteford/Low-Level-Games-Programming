@@ -6,10 +6,12 @@
 #include <iostream>
 #include <fstream>
 #include "Logger.h"
+#include "MoveCom.h"
 class SphScene
 {
 private:
 	std::vector<Sphere>* spheres;
+	std::vector<MoveCom>* moves;
 public:
 	SphScene();
 	~SphScene();
